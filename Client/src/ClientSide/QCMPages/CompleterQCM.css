@@ -1,0 +1,24 @@
+.Answer {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 10px;
+}
+
+.Answer:hover {
+  background-color: #554c4ce4;
+  cursor: pointer;
+}
+
+.AnswerActive {
+  border: 1px solid black;
+  background-color: darkolivegreen;
+  margin: 5px;
+  padding: 10px;
+}
+
+.AnswerDisActive {
+  border: 1px solid black;
+  background-color: crimson;
+  margin: 5px;
+  padding: 10px;
+}

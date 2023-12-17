@@ -1,5 +1,5 @@
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 
   color: #48494a;
   background-image: url(../images/body-bg.jpg);
@@ -57,7 +57,7 @@ body {
   -o-transform: translate3d(-0.5%, -0.5%, 0) scale(1.1);
 }
 
-#startHere:hover{
+#startHere:hover {
   color: #082465;
   background-color: white;
 }
@@ -78,8 +78,20 @@ body {
   padding-top: 10px;
 }
 
-nav.navbar.navbar-expand-lg {
+/* Added By Abderrahmane*/
+.header_section::before {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: url(/src/Imgs/hero-bg-blue.png);
+  background-size: cover;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
 
+nav.navbar.navbar-expand-lg {
   padding: 10px 0;
 }
 
@@ -116,18 +128,21 @@ a:focus {
   height: 95vh;
   position: relative;
 }
-
+/* Deleted By Abderrahmane
 .top_container::before {
   content: "";
   position: absolute;
   width: 48%;
   height: 100%;
-  background: url(../images/hero-bg-blue.png);
+  
+  background: url(/src/Imgs/hero-bg-blue.png);
   background-size: cover;
   background-position: right bottom;
   background-repeat: no-repeat;
   z-index: -1;
+  
 }
+*/
 
 .top_container.sub_pages::before {
   background-size: 400px 200px;
@@ -146,7 +161,6 @@ a:focus {
   width: 25px;
   margin-right: 7px;
 }
-
 
 .custom_nav-container .nav_search-btn {
   background-image: url(../images/search-icon.png);
@@ -180,7 +194,7 @@ a:focus {
 }
 
 .custom_nav-container .navbar-toggler .navbar-toggler-icon {
-  background-image: url(../images/menu.png);
+  background-image: url(/src/Imgs/menu.png);
   background-size: 40px;
 }
 
@@ -214,12 +228,10 @@ a:focus {
   font-weight: bold;
 }
 
-
 .hero_detail-box p {
   margin-top: 20px;
   margin-bottom: 35px;
 }
-
 
 /* end hero section */
 
@@ -243,7 +255,6 @@ a:focus {
 }
 
 /* end teacher container */
-
 
 /* client section */
 .client_section {
@@ -284,15 +295,11 @@ a:focus {
   width: 100%;
 }
 
-
-
-
 /* end client section */
-
 
 /* contact section */
 .contact_section {
-  background-image: url(../images/shape-2.png);
+  background-image: url(/src/Imgs/shape-2.png);
   background-repeat: no-repeat;
   background-size: 14%;
   background-position: left center;
@@ -317,7 +324,7 @@ a:focus {
 }
 
 .contact-form input::placeholder {
-  color: #fff;
+  color: #5f5a5a;
 }
 
 .contact-form button {
