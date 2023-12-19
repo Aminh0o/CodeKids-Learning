@@ -5,10 +5,9 @@ import {
   doc,
   getDoc,
   getDocs,
-  limit,
-  addDoc,
   where,
   query,
+  addDoc,
 } from "firebase/firestore";
 import QCM from "./QCM";
 import FireBaseQCM from "./FireBaseQCM.js";
@@ -126,8 +125,6 @@ export default class User {
     this.currentQCM = null;
     this.finalQCM.calculerNote();
   }
-
-  laisserAvis() {}
 
   getQCMHistory() {}
 }

@@ -7,13 +7,19 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import Question from "./Question";
+import Avis from "./Avis";
+import User from "./User";
 
 export default class Admin {
   static #instance;
   docRef;
   questions = [];
+  avis = [];
+  users = [];
+  isFetchingActive = false;
 
   constructor() {
     if (Admin.#instance) throw new Error("New instance cannot be created!");
@@ -59,26 +65,15 @@ export default class Admin {
     return Admin.#instance != null;
   }
 
-  /* params = 
-  {
-    questionId
-    niveau,
-    language,
-    reponses={
-      {reponse,isCorrect},
-      {reponse,isCorrect},
-      {reponse,isCorrect},
-      {reponse,isCorrect}
-    } 
-  }
-  */
-
   // max = number of questions to get
   async getQuestions(max) {
+    if (this.isFetchingActive) return;
+    this.isFetchingActive = true;
+
     this.questions = [];
     await getDocs(
       collection(db, "Questions"),
-      max == -1 ? limit(999) : limit(max),
+      max == -1 ? limit(50) : limit(max),
     )
       .then((querySnapShot) => {
         querySnapShot.forEach((docSnapShot) => {
@@ -96,7 +91,18 @@ export default class Admin {
       .catch(() => {
         console.log("failled to load questions");
       });
+    this.isFetchingActive = false;
     return this.questions;
+  }
+  // params = max,niveau,language
+  getQuestionsFiltered(params) {
+    const filteredQuestions = this.questions.filter((question) => {
+      return (
+        (params.niveau == "" || question.niveau == params.niveau) &&
+        (params.language == "" || question.language == params.language)
+      );
+    });
+    return filteredQuestions;
   }
   // params = question {niveau, language, question, responses}
   async ajouterQuestion(params) {
@@ -129,6 +135,87 @@ export default class Admin {
       })
       .catch(() => {
         console.log("Question non supprimée avec echeck!");
+      });
+  }
+
+  async getAvis() {
+    if (this.isFetchingActive) return;
+    this.isFetchingActive = true;
+    this.avis = [];
+    await getDocs(collection(db, "Avis"))
+      .then((querySnapShot) => {
+        querySnapShot.forEach((docSnapShot) => {
+          this.avis.push(
+            new Avis({
+              nom: docSnapShot.data().nom,
+              email: docSnapShot.data().email,
+              message: docSnapShot.data().message,
+              sujet: docSnapShot.data().sujet,
+              id: docSnapShot.id,
+            }),
+          );
+        });
+      })
+      .catch(() => {
+        console.log("failled to load avis");
+      });
+    this.isFetchingActive = false;
+    return this.avis;
+  }
+
+  // params = {id,...avis}
+  async markAsSeen(params) {
+    await updateDoc(doc(db, "Avis", params.id), {
+      seen: true,
+    })
+      .then(() => {
+        console.log("Avis marked as seen");
+      })
+      .catch(() => {
+        console.log("failled to mark as seen");
+      });
+  }
+
+  async getUsers() {
+    if (this.isFetchingActive) return;
+    this.isFetchingActive = true;
+    this.users = [];
+    await getDocs(collection(db, "Users"))
+      .then((querySnapShot) => {
+        querySnapShot.forEach((docSnapShot) => {
+          this.users.push(
+            new User({
+              id: docSnapShot.id,
+              email: docSnapShot.data().email,
+              nom: docSnapShot.data().nom,
+              prenom: docSnapShot.data().prenom,
+              dateNaissance: docSnapShot.data().dateNaissance,
+              languagePrefere: docSnapShot.data().languagePrefere,
+            }),
+          );
+        });
+      })
+      .catch(() => {
+        console.log("failled to load users");
+      });
+    this.isFetchingActive = false;
+    const unbannedUsers = this.users.filter((user) => {
+      return user.banned ? false : true;
+    });
+    return unbannedUsers;
+  }
+
+  // params = {id,...user}
+  async banUser(params) {
+    console.log(params);
+    await updateDoc(doc(db, "Users", params.id), {
+      banned: true,
+    })
+      .then(() => {
+        console.log("User banned");
+      })
+      .catch(() => {
+        console.log("failled to ban user");
       });
   }
 }

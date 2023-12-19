@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import User from "/src/BackEnd/User";
 import { UserContext } from "/src/App";
+import Visiteur from "/src/BackEnd/Visiteur";
+
 export default function MainPage() {
   return (
     <div>
@@ -149,6 +151,44 @@ function Teachers() {
 }
 
 function Contact() {
+  const { connected, setConnected } = useContext(UserContext);
+  const [data, setData] = useState({
+    nom: "",
+    sujet: "",
+    email: "",
+    message: "",
+  });
+
+  useEffect(() => {
+    if (connected) {
+      setData({
+        ...data,
+        nom: User.getInstance()?.nom || "",
+        email: User.getInstance()?.email || "",
+      });
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      data.nom == "" ||
+      data.email == "" ||
+      data.message == "" ||
+      data.sujet == ""
+    )
+      return;
+
+    Visiteur.laisserAvis(data).finally(() => {
+      setData({
+        nom: "",
+        sujet: "",
+        email: "",
+        message: "",
+      });
+    });
+  };
+
   return (
     <section className="contact_section layout_padding-bottom">
       <div className="container">
@@ -161,23 +201,55 @@ function Contact() {
                 <div className="contact-form">
                   <form>
                     <div>
-                      <input type="text" placeholder="Name" />
+                      <input
+                        type="text"
+                        disabled={connected}
+                        value={data.nom}
+                        onChange={(e) => {
+                          setData({ ...data, nom: e.target.value });
+                        }}
+                        placeholder="Nom"
+                      />
                     </div>
                     <div>
-                      <input type="text" placeholder="Subject" />
+                      <input
+                        type="text"
+                        placeholder="Subject"
+                        value={data.sujet}
+                        onChange={(e) => {
+                          setData({ ...data, sujet: e.target.value });
+                        }}
+                      />
                     </div>
                     <div>
-                      <input type="email" placeholder="Email" />
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        disabled={connected}
+                        value={data.email}
+                        onChange={(e) => {
+                          setData({ ...data, email: e.target.value });
+                        }}
+                      />
                     </div>
                     <div>
                       <input
                         type="text"
                         placeholder="Message"
+                        value={data.message}
                         className="input_message"
+                        onChange={(e) => {
+                          setData({ ...data, message: e.target.value });
+                        }}
                       />
                     </div>
                     <div className="d-flex justify-content-center">
-                      <button type="submit" className="call_to-btn">
+                      <button
+                        className="call_to-btn"
+                        onClick={(e) => {
+                          handleSubmit(e);
+                        }}
+                      >
                         Send
                       </button>
                     </div>

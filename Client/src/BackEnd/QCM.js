@@ -1,5 +1,7 @@
 import { collection, addDoc, doc } from "firebase/firestore";
 import { db } from "../Config/config-firebase.js";
+import User from "./User";
+
 export default class QCM {
   niveau;
   language;
@@ -40,12 +42,13 @@ export default class QCM {
       langugae: this.language,
       note: this.note,
       questions: data,
+      date: new Date(),
     };
   }
 
   saveQCM() {
     addDoc(
-      collection(doc(db, "Users", this.userID), "PastQCMs"),
+      collection(doc(db, "Users", User.getInstance().userID), "PastQCMs"),
       this.toFirebase(),
     )
       .then(() => {

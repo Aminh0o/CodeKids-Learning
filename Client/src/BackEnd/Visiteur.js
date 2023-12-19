@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import User from "./User";
 
 export default class Visiteur {
@@ -41,5 +41,15 @@ export default class Visiteur {
         console.log("SingUp failled");
       });
     await User.createInstance(auth.currentUser.uid);
+  }
+
+  static async laisserAvis(avis) {
+    addDoc(collection(db, "Avis"), avis)
+      .then(() => {
+        console.log("avis envoye");
+      })
+      .catch(() => {
+        console.log("avis non envoye");
+      });
   }
 }
