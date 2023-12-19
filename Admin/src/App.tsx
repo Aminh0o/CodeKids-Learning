@@ -28,7 +28,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AuthPage />}></Route>
         <Route path="/home" element={<AdminMainPage />}></Route>
-        <Route path="/questions" element={<QuestionPage />}></Route>
       </Routes>
     </Router>
   );

@@ -8,6 +8,8 @@ import Admin from "../../Backend/Admin.js";
 
 import AuthPage from "../AuthPage/authPage";
 import QuestionPage from "../QuestionsPage/questionsPage";
+import AvisPage from "../AvisPage/AvisPage";
+import ComptesPage from "../ComptesPage/ComptesPage";
 
 export default function AdminMainPage() {
   const navigate = useNavigate();
@@ -18,14 +20,9 @@ export default function AdminMainPage() {
   useEffect(() => {
     setConnected(Admin.isAdminConnected());
     if (!connected) {
-      console.log(
-        "going to login " + connected + "  " + Admin.isAdminConnected(),
-      );
-
       navigate("/");
     }
   }, [connected]);
-  console.log("going to login " + connected + "  " + Admin.isAdminConnected());
   // Disconnecting
   const handleLogout = () => {
     Admin.deConnecter();
@@ -37,11 +34,11 @@ export default function AdminMainPage() {
       case 0:
         return <AdminDashBoard />;
       case 1:
-        return <AdminComptes />;
+        return <ComptesPage />;
       case 2:
         return <QuestionPage />;
       case 3:
-        return <AdminAvis />;
+        return <AvisPage />;
       default:
         return <></>;
     }

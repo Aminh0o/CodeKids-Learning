@@ -28,13 +28,13 @@ body {
 .call_to-btn {
   margin-top: 2%;
   display: inline-block;
+  color: #082465;
   padding: 12px 20px;
   border-radius: 10px;
   font-size: 15px;
   text-transform: uppercase;
   background-color: #fec913;
   border: 1px solid transparent;
-  color: #082465;
   transition: all 0.3s ease 0s;
 }
 
@@ -334,7 +334,7 @@ a:focus {
   text-transform: uppercase;
   margin-top: 25px;
   background-color: #fec913;
-  color: #fff;
+  color: #082465;
 }
 
 /* end contact section */

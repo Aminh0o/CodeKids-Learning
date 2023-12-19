@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Admin from "../../Backend/Admin.js";
 import Question from "../../Backend/Question.js";
+import NewQuestionFragment from "./NewQuestionFragment.js";
 
 export default function QuestionPage() {
   const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchFilters, setsearchFilters] = useState({
+    language: "",
+    niveau: "",
+    question: "",
+  });
+  //const [canResetSearch, setCanResetSearch] = useState(false);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      const q = await Admin.getInstance().getQuestions();
-      setQuestions(q);
-    };
-    fetchQuestions();
-  }, []);
-
-  console.log(questions);
-
-  // One Question | params = {question, key}
+  // One Question | params = {question, key} | usedVar/Func = {}
   function QuestionFragment(params) {
     const [canEdit, setCanEdit] = useState(false);
     const [modifiedQuestion, setModifiedQuestion] = useState(params.question);
@@ -34,11 +32,7 @@ export default function QuestionPage() {
                 params = {index,response}
       */
       const OneResponseFragment = (params) => {
-        //
-        // TOFIX
-        // verify response.isCorrect exist (make sure that only one is correct)
         const handleCheckBoxChange = (index) => {
-          //console.log("in:" + correct + " == ?" + index);
           setCorrect(index + "");
           setModifiedResponses(
             modifiedResponses.map((response, i) => ({
@@ -47,12 +41,6 @@ export default function QuestionPage() {
             })),
           );
         };
-        /*if (
-          canEdit &&
-          params.response.isCorrect != null &&
-          params.response.isCorrect
-        )
-          setCorrect(String(params.index));*/
 
         return (
           <div>
@@ -60,9 +48,7 @@ export default function QuestionPage() {
               type="checkbox"
               checked={correct == String(params.index)}
               disabled={!canEdit}
-              onChange={(e) => {
-                console.log("out:" + correct + " == ?" + params.index);
-                //console.log(modifiedResponses);
+              onChange={() => {
                 handleCheckBoxChange(params.index);
               }}
             />
@@ -81,7 +67,9 @@ export default function QuestionPage() {
       };
 
       return modifiedResponses.map((response, index) => {
-        return <OneResponseFragment response={response} index={index} />;
+        return (
+          <OneResponseFragment response={response} index={index} key={index} />
+        );
       });
     };
     // modier button pressed
@@ -200,169 +188,87 @@ export default function QuestionPage() {
     );
   }
 
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const tmpQuestions = await Admin.getInstance().getQuestions();
+      setQuestions(tmpQuestions);
+      setIsLoading(false);
+    };
+    fetchQuestions();
+  }, []);
+
+  const handleChercherQuestions = (e) => {
+    e.preventDefault();
+    const filteredQuestions = Admin.getInstance().getQuestionsFiltered({
+      max: -1,
+      ...searchFilters,
+    });
+    setQuestions(filteredQuestions);
+    //setCanResetSearch(true);
+  };
+
+  const handleResetSearch = (e) => {
+    e.preventDefault();
+    setQuestions(Admin.getInstance().questions);
+    //setCanResetSearch(false);
+  };
+
+  const LoadedQuestions = () => {
+    // No touching in ".?" or it break . NO TOUCH IN CODE !!!
+    if (isLoading) return <span>Loading...</span>;
+    if (questions?.length == 0) return <span>No questions found</span>;
+
+    return (
+      <>
+        <span>il existe {questions?.length} questions</span>
+        {questions?.map((question, index) => {
+          return (
+            <>
+              <QuestionFragment question={question} key={index} />
+            </>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <>
       <h1>Ajouter nouvel question :</h1>
-      <NewQuestionFragment />
+      <NewQuestionFragment setQuestions={setQuestions} questions={questions} />
       <h1>Modifier ou supprimer les questions :</h1>
-      {questions.map((question, index) => {
-        //console.log(question + " aqsdqs " + index);
-        return <QuestionFragment question={question} key={index} />;
-      })}
-    </>
-  );
-}
-
-function NewQuestionFragment() {
-  const [question, setQuestion] = useState({
-    language: "",
-    niveau: "",
-    question: "",
-    /* responses: [{isCorrect: false,response: "" }],  */
-  });
-  // on peut merger responses dans question (plus de travail)
-  const [responses, setResponses] = useState([
-    { isCorrect: false, response: "" },
-    { isCorrect: false, response: "" },
-    { isCorrect: false, response: "" },
-    { isCorrect: false, response: "" },
-  ]);
-  // pour assurer que un seul checkbox est coche
-  const [correct, setCorrect] = useState("0");
-
-  const handleCheckBoxChange = (index) => {
-    setCorrect(index);
-    setResponses(
-      responses.map((response, i) => ({
-        ...response,
-        isCorrect: i == parseInt(index),
-      })),
-    );
-  };
-
-  const handleResponseChange = (index, value) => {
-    setResponses(
-      responses.map((response, i) => ({
-        ...response,
-        response: i == index ? value : response.response,
-      })),
-    );
-    console.log(responses);
-  };
-
-  const handleAjouterQuestion = (submitEvent) => {
-    // must have to not refersh page
-    submitEvent.preventDefault();
-    const newQuestion = { ...question, responses };
-    console.log(newQuestion);
-
-    Admin.getInstance().ajouterQuestion(newQuestion);
-    const AfterEmptyQuestion = {
-      language: "",
-      niveau: "",
-      question: "",
-    };
-    const AfterEmptyResponses = responses.map(() => {
-      return {
-        isCorrect: false,
-        response: "",
-      };
-    });
-    setQuestion(AfterEmptyQuestion);
-    setResponses(AfterEmptyResponses);
-  };
-
-  // NOT USEFULL FOR NOW (can be used to shorten code)
-  function NewResponse() {
-    return (
-      <>
-        <input type="checkbox" />
-        <input type="text" placeholder="la reponse" />
-        <br />
-      </>
-    );
-  }
-
-  return (
-    <form>
-      <label>la question :</label>
-      <input
-        type="text"
-        onChange={(e) => setQuestion({ ...question, question: e.target.value })}
-        style={{ width: "${text.lenght * 10}px" }}
-      />
-      <br />
-      <select
-        onChange={(e) => setQuestion({ ...question, niveau: e.target.value })}
-      >
-        <option value="facile">facile</option>
-        <option value="moyen">moyen</option>
-        <option value="difficile">difficile</option>
-      </select>
-      <br />
-      <label>la langue :</label>
-      <select
-        onChange={(e) => setQuestion({ ...question, language: e.target.value })}
-      >
-        <option value="C">C</option>
-        <option value="Java">Java</option>
-        <option value="JavaScript">JavaScript</option>
-        <option value="Python">Python</option>
-      </select>
-      <br />
       <div>
-        <input
-          type="checkbox"
-          checked={correct == "0"}
-          onChange={() => handleCheckBoxChange("0")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 0"
-          onChange={(e) => handleResponseChange(0, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "1"}
-          onChange={() => handleCheckBoxChange("1")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 1"
-          onChange={(e) => handleResponseChange(1, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "2"}
-          onChange={() => handleCheckBoxChange("2")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 2"
-          onChange={(e) => handleResponseChange(2, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "3"}
-          onChange={() => handleCheckBoxChange("3")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 3"
-          onChange={(e) => handleResponseChange(3, e.target.value)}
-        />
-        <br />
+        <form>
+          <select
+            defaultValue={""}
+            onChange={(e) =>
+              setsearchFilters({ ...searchFilters, niveau: e.target.value })
+            }
+          >
+            <option value="">All levels</option>
+            <option value="facile">facile</option>
+            <option value="moyen">moyen</option>
+            <option value="difficile">difficile</option>
+          </select>
+          <select
+            defaultValue={""}
+            onChange={(e) =>
+              setsearchFilters({ ...searchFilters, language: e.target.value })
+            }
+          >
+            <option value="">All languages</option>
+            <option value="C">C</option>
+            <option value="Java">Java</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+          </select>
+          <button onClick={(e) => handleChercherQuestions(e)}>Chercher</button>
+          <button onClick={(e) => handleResetSearch(e)}>
+            Reset les questions
+          </button>
+        </form>
+        <LoadedQuestions />
       </div>
-      <button
-        onClick={(e) => {
-          handleAjouterQuestion(e);
-        }}
-      >
-        Ajouter Question au base de données
-      </button>
-    </form>
+    </>
   );
 }
