@@ -1,0 +1,143 @@
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #ffefcd;
+}
+
+.top_container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.top_background::before {
+    content: "";
+    position: absolute;
+    background: url(../images/hero-bg-blue.png);
+    width: 48%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+.signUp-form-container,
+.login-form-container,
+.modifyProfil-form-container {
+    background: antiquewhite;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.signUp-form-container {
+    width: 500px;
+}
+
+.login-form-container:hover {
+    transform: scale(1.1);
+}
+
+.signUp_form,
+.login_form,
+.modifyProfil_form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+h2 {
+    color: #082465;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 10px;
+    color: #082465;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    line-height: 1.5;
+    outline: none;
+    border: 2px solid #082465;
+    background-color:#ffefcd;
+    opacity: 0.6;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input:focus,
+input:hover {
+    opacity: 1;
+}
+
+.call_to_btn {
+    background-color:#fec913;
+    color: #082465;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.call_to_btn:hover {
+    background-color: #082465;
+    color: #fec913;
+}
+
+p {
+    margin-top: 10px;
+}
+
+a {
+    color: #082465;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.custom_nav-container {
+    position: fixed;
+    top: 20px; /* Adjust the top position as needed */
+    left: 20px; /* Adjust the left position as needed */
+    display: flex;
+    align-items: center;
+}
+
+
+.nav_home-btn {
+    background-color: #fec913;
+    color: #082465;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.nav_home-btn:hover {
+    background-color: antiquewhite;
+    color: #082465;
+}
