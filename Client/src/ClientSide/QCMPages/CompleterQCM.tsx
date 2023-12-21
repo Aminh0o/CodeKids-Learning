@@ -48,8 +48,8 @@ export default function CompleterQCM() {
     };
 
     return (
-      <div>
-        <h2>La question : {params.index}</h2>
+      <div className="question">
+        <h2>La question : {params.index + 1}</h2>
         <span>{params.question.question}</span>
         <br />
         {params.question.responses.map((response, index) => {
@@ -63,12 +63,15 @@ export default function CompleterQCM() {
   }
 
   return (
-    <div>
-      <h1>HELLO</h1>
-      {questions.map((question, index) => (
-        <QuestionFragment question={question} key={index} index={index} />
-      ))}
-      <button onClick={() => handleGoingToFinQCM()}>Submit Your answers</button>
+    <div className="center-container">
+      <div className="qcm-two-container">
+        {questions.map((question, index) => (
+          <QuestionFragment question={question} key={index} index={index} />
+        ))}
+        <button className="call_to-btn" onClick={() => handleGoingToFinQCM()}>
+          Submit Your answers
+        </button>
+      </div>
     </div>
   );
 }

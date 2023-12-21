@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import User from "/src/BackEnd/User";
 import { UserContext } from "/src/App";
 import { Link } from "react-router-dom";
@@ -11,12 +11,32 @@ export default function Header() {
     setConnected(false);
     User.deConnecter();
   };
+
+  const ShowCompteStatus = () => {
+    // TOFIX : not working
+    //if (window.location.pathname == "/Login") return <></>;
+    if (!connected)
+      return (
+        <>
+          <Link className="nav-link" to="/Login">
+            Login
+          </Link>
+        </>
+      );
+    else
+      return (
+        <Link className="nav-link" onClick={() => handleLogout()}>
+          Logout
+        </Link>
+      );
+  };
+
   return (
     <>
       <header className="header_section">
         <div className="container">
           <nav className="navbar navbar-expand-lg custom_nav-container ">
-            <a className="navbar-brand" href="CodeKIds.html">
+            <Link className="navbar-brand" to="/">
               <img
                 src="src\Imgs\CodeKids-erased.png"
                 alt=""
@@ -24,7 +44,7 @@ export default function Header() {
                 style={{ width: "100%", maxWidth: "100px", maxHeight: "100px" }}
               />
               <span>CodeKids:Learning</span>
-            </a>
+            </Link>
             <button
               className={
                 showNav ? "navbar-toggler" : "navbar-toggler collapsed"
@@ -76,15 +96,7 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    {!connected ? (
-                      <Link className="nav-link" to="/Login">
-                        Login
-                      </Link>
-                    ) : (
-                      <Link className="nav-link" onClick={() => handleLogout()}>
-                        Logout
-                      </Link>
-                    )}
+                    <ShowCompteStatus />
                   </li>
                 </ul>
               </div>

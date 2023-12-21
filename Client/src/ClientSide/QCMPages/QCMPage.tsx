@@ -6,6 +6,7 @@ import FinQCM from "./FinQCM";
 import User from "/src/BackEnd/User";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../../App";
+import "./QCMPage.css";
 
 export const QCMContext = createContext({});
 
@@ -18,7 +19,7 @@ export default function QCMPage() {
     setEtape((prev) => Math.min(prev + 1, 2));
   };
 
-  const currentPage = () => {
+  const CurrentPage = () => {
     switch (etape) {
       case 0:
         return <CommancerQCM />;
@@ -33,16 +34,17 @@ export default function QCMPage() {
 
   const handleAnnuler = () => {
     User.getInstance().annulerQCM();
-    //const navigate = useNavigate();
-    //navigate("/");
   };
 
   return (
     <QCMContext.Provider value={{ newQCM, setNewQCM, nextStep }}>
-      <Link onClick={() => handleAnnuler()} to="/">
-        Annuler le QCM
-      </Link>
-      {currentPage()}
+      <div className="top-continer">
+        <Link onClick={() => handleAnnuler()} to="/">
+          Annuler le QCM
+        </Link>
+
+        <CurrentPage />
+      </div>
     </QCMContext.Provider>
   );
 }
