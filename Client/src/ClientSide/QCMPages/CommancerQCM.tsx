@@ -5,15 +5,18 @@ import User from "/src/BackEnd/User";
 export default function CommancerQCM() {
   const { newQCM, setNewQCM, nextStep } = useContext(QCMContext);
   const [isSelected, setIsSelected] = useState({
-    isIt: true,
-    oldValue: "",
+    isIt: false,
+    oldValue: "C",
   });
 
-  const handleLanguagePrefere = async (e) => {
+  // preDefined newQCM :
+  //setNewQCM({ ...newQCM, language: "C", niveau: "facile" });
+
+  const handleLanguagePrefere = (e) => {
     e.preventDefault();
     setIsSelected({ ...isSelected, isIt: !isSelected.isIt });
-    if (isSelected.isIt)
-      setNewQCM({ ...newQCM, language: User.getInstance().languagePrefere });
+    //if (isSelected.isIt)
+    setNewQCM({ ...newQCM, language: User.getInstance().languagePrefere });
   };
 
   const handleGenerationQCM = async (submitEvent) => {
@@ -38,39 +41,47 @@ export default function CommancerQCM() {
   };
 
   return (
-    <form>
-      <span>Slectioner votre niveau</span>
-      <select
-        onChange={(e) => {
-          setNewQCM({ ...newQCM, niveau: e.target.value });
-        }}
-      >
-        <option value="facile">Facile</option>
-        <option value="moyen">Moyen</option>
-        <option value="difficile">Difficile</option>
-      </select>
-      <br />
-      <br />
-      <span>Slectioner votre langage</span>
-      <select
-        value={isSelected ? newQCM.language : isSelected.oldValue}
-        disabled={!isSelected.isIt}
-        onChange={(e) => {
-          setIsSelected({ ...isSelected, oldValue: e.target.value });
-          setNewQCM({ ...newQCM, language: e.target.value });
-        }}
-      >
-        <option value="C">C</option>
-        <option value="C++">C++</option>
-        <option value="Java">Java</option>
-        <option value="Python">Python</option>
-      </select>
-      <span>ou</span>
-      <button onClick={(e) => handleLanguagePrefere(e)}>
-        language priferer
-      </button>
-      <br />
-      <button onClick={(e) => handleGenerationQCM(e)}>Generer le QCM</button>
-    </form>
+    <div className="qcm-one-container">
+      <form>
+        <label>Slectioner votre niveau</label>
+        <select
+          value={newQCM.niveau}
+          onChange={(e) => {
+            setNewQCM({ ...newQCM, niveau: e.target.value });
+          }}
+        >
+          <option value="facile">Facile</option>
+          <option value="moyen">Moyen</option>
+          <option value="difficile">Difficile</option>
+        </select>
+        <label>Slectioner votre langage</label>
+        <select
+          value={newQCM.language}
+          disabled={isSelected.isIt}
+          onChange={(e) => {
+            setIsSelected({ ...isSelected, oldValue: e.target.value });
+            setNewQCM({ ...newQCM, language: e.target.value });
+          }}
+        >
+          <option value="C">C</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Java">Java</option>
+          <option value="Python">Python</option>
+        </select>
+        <label>ou</label>
+        <button
+          onClick={(e) => handleLanguagePrefere(e)}
+          className="call_to_btn"
+        >
+          Choisir mon language preferé
+        </button>
+        <label style={{ marginTop: "20px" }}>
+          Clicker ici pour generer votre QCM :
+        </label>
+        <button className="call_to_btn" onClick={(e) => handleGenerationQCM(e)}>
+          Generer le QCM
+        </button>
+      </form>
+    </div>
   );
 }

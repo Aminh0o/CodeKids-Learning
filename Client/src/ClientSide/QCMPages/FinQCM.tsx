@@ -27,13 +27,23 @@ export default function FinQCM() {
   };
 
   return (
-    <div>
-      <span>Votre note est : {finalQCM.note}</span>
-      <br />
-      {WebReaction()}
-      <br />
-      {canSave && <button onClick={() => handleSave()}>Enregistrer</button>}
-      <button onClick={() => hanldeQuit()}>Quiter</button>
+    <div className="top-continer">
+      <div className="qcm-three-container">
+        <span>Votre note est : {finalQCM.note}</span>
+
+        <WebReaction />
+
+        <div className="btn-container">
+          {canSave && (
+            <button className="call_to-btn" onClick={() => handleSave()}>
+              Enregistrer
+            </button>
+          )}
+          <button className="call_to-btn" onClick={() => hanldeQuit()}>
+            Quiter
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
