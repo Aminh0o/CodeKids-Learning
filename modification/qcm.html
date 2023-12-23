@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../CodeKids/css/qcm.css">
+    <title>Kids Quiz</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">
+            <img src="../CodeKids/images/logo.png" width="30" height="30" alt="Logo">
+            QCM
+        </a>
+        <div id="navbarNav" class="navbar-collapse">
+            <ul class="nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Service</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profil</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="top_container">
+        <div id="quiz-container" class="container">
+            <h1>Kids Quiz Time</h1>
+            <div class="timer-container">
+                <div id="timer">Time Left: <span id="countdown">30:00</span></div>
+            </div>
+            <form id="quiz-form">
+                <!-- Questions and Options will be generated dynamically using JavaScript -->
+            </form>
+            <button type="button" id="submit-button" class="btn">Submit</button>
+        </div>
+    </div>
+
+    <script src="../CodeKids/js/questions.js"></script>
+    <script src="../CodeKids/js/qcm_script.js"></script>
+</body>
+
+</html>
