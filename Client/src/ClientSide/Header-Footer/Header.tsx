@@ -10,6 +10,7 @@ export default function Header() {
   const handleLogout = () => {
     setConnected(false);
     User.deConnecter();
+    localStorage.removeItem("user");
   };
 
   const ShowCompteStatus = () => {
@@ -25,8 +26,8 @@ export default function Header() {
       );
     else
       return (
-        <Link className="nav-link" onClick={() => handleLogout()}>
-          Logout
+        <Link className="nav-link" to="/Profile">
+          Profile
         </Link>
       );
   };

@@ -5,6 +5,7 @@ export default class Question {
   language;
   responses = [];
   gotCorrect = false;
+  chosenResponse = -1;
 
   // params = {question, questionId, niveau, language, responses}
   constructor(params) {
@@ -17,5 +18,9 @@ export default class Question {
 
   setGotCorrect(gotCorrect) {
     this.gotCorrect = gotCorrect;
+  }
+
+  setChosenResponse(indexOfAnswer) {
+    this.chosenResponse = indexOfAnswer;
   }
 }

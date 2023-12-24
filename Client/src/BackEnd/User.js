@@ -28,33 +28,31 @@ export default class User {
 
   // constructor params = {nom, email, id, prenom, dateNaissance, languagePrefere}
   constructor(params) {
-    if (User.#instance) throw new Error("New instance cannot be created!");
-    this.docRef = doc(db, "Users", auth.currentUser.uid);
-    getDoc(this.docRef).then((doc) => {
-      if (!doc.exists) throw new Error("User isnt connected to AUTH service!");
-      this.nom = params.nom;
-      this.email = params.email;
-      this.userID = params.id;
-      this.prenom = params.prenom;
-      this.dateNaissance = params.dateNaissance;
-      this.languagePrefere = params.languagePrefere;
-    });
+    this.nom = params.nom;
+    this.prenom = params.prenom;
+    this.email = params.email;
+    this.userID = params.id;
+    this.dateNaissance = params.dateNaissance;
+    this.languagePrefere = params.languagePrefere;
   }
 
   static async createInstance(id) {
     if (User.#instance) throw new Error("New instance cannot be created!");
     const docRef = doc(db, "Users", id);
 
-    const docSnapShot = await getDoc(docRef);
-
-    User.#instance = new User({
-      nom: docSnapShot.data().nom,
-      email: docSnapShot.data().email,
-      id: docSnapShot.id,
-      prenom: docSnapShot.data().prenom,
-      dateNaissance: docSnapShot.data().dateNaissance,
-      languagePrefere: docSnapShot.data().languagePrefere,
+    await getDoc(docRef).then((docSnapShot) => {
+      if (!docSnapShot.exists)
+        throw new Error("User isnt connected to AUTH service!");
+      User.#instance = new User({
+        nom: docSnapShot.data().nom,
+        email: docSnapShot.data().email,
+        id: docSnapShot.id,
+        prenom: docSnapShot.data().prenom,
+        dateNaissance: docSnapShot.data().dateNaissance,
+        languagePrefere: docSnapShot.data().languagePrefere,
+      });
     });
+
     // TOFIX : Look chatGBT
   }
 
