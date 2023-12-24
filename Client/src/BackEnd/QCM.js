@@ -17,12 +17,14 @@ export default class QCM {
     });
   }
 
-  // params = {question,gotCorrect}
+  // params = {question,gotCorrect,indexOfAnswer}
   setGotCorrectQuestion(params) {
     let tmpQuestion = [];
     this.questions.forEach((question) => {
-      if (question.questionID == params.question.questionID)
+      if (question.questionID == params.question.questionID) {
         question.setGotCorrect(params.gotCorrect);
+        question.setChosenResponse(params.indexOfAnswer);
+      }
       tmpQuestion.push(question);
     });
     this.questions = tmpQuestion;

@@ -11,6 +11,7 @@ export default function LoginPage(params) {
   const [data, setData] = useState({
     email: "",
     password: "",
+    remeberMe: false,
   });
   const [error, setError] = useState("");
 
@@ -21,6 +22,9 @@ export default function LoginPage(params) {
     if (User.isUserConnected()) {
       navigate("" + params.lastPage);
       setConnected(true);
+
+      if (data.remeberMe)
+        localStorage.setItem("user", User.getInstance().userID);
     } else {
       setError("Erreurs dans votre informations");
     }
@@ -50,8 +54,13 @@ export default function LoginPage(params) {
               onChange={(e) => setData({ ...data, password: e.target.value })}
             />
             <div>
-              <input type="checkbox" />
-              <label>Remeber ME (notWorking)</label>
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  setData({ ...data, remeberMe: e.target.checked })
+                }
+              />
+              <label>Remeber me</label>
             </div>
 
             <br />

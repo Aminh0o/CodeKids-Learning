@@ -24,7 +24,7 @@ export default class FireBaseQCM extends QCM {
 
   // get random questions for this QCM
   async getQuestions() {
-    getDocs(
+    await getDocs(
       query(
         collection(db, "Questions"),
         where("niveau", "==", this.niveau),

@@ -21,7 +21,6 @@ export default class Visiteur {
 
   // params : {nom, prenom, dateNaissance, email, languagePrefere};
   static async creeCompte(params) {
-    console.log(params);
     // cree compte dans auth
     await createUserWithEmailAndPassword(auth, params.email, params.password);
     // insirrer les valeurs dans firestore

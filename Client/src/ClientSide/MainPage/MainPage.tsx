@@ -200,7 +200,7 @@ function Contact() {
               <div className="col-md-6 mx-auto">
                 <div className="contact-form">
                   <form>
-                    <div>
+                    <div className="form-group">
                       <input
                         type="text"
                         disabled={connected}
@@ -209,9 +209,10 @@ function Contact() {
                           setData({ ...data, nom: e.target.value });
                         }}
                         placeholder="Nom"
+                        className="form-control"
                       />
                     </div>
-                    <div>
+                    <div className="form-group">
                       <input
                         type="text"
                         placeholder="Subject"
@@ -219,6 +220,7 @@ function Contact() {
                         onChange={(e) => {
                           setData({ ...data, sujet: e.target.value });
                         }}
+                        className="form-control"
                       />
                     </div>
                     <div>

@@ -28,7 +28,7 @@ export default function QCMPage() {
       case 2:
         return <FinQCM />;
       default:
-        return <span>ERROR ZABI</span>;
+        return <span>ERROR</span>;
     }
   };
 

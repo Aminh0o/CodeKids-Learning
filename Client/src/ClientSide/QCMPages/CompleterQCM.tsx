@@ -9,10 +9,11 @@ export default function CompleterQCM() {
   const [questions, setQuestions] = useState([]);
   const [canGoNext, setCanGoNext] = useState(questions.length);
   useEffect(() => {
-    setQuestions(User.getInstance().currentQCM.questions);
+    setQuestions(newQCM.questions);
+    console.log(questions);
+
     // TOFIX all questns should be done
     //setCanGoNext(questions.length);
-    console.log(questions);
   }, []);
 
   const handleGoingToFinQCM = async () => {
@@ -34,6 +35,7 @@ export default function CompleterQCM() {
         User.getInstance().currentQCM.setGotCorrectQuestion({
           question: currentQuestion,
           gotCorrect: params.response.isCorrect,
+          indexOfAnswer: params.index,
         });
       };
       return (
@@ -42,7 +44,6 @@ export default function CompleterQCM() {
           onClick={() => handlePickAnswer()}
         >
           <span>{params.response.response}</span>
-          <br />
         </div>
       );
     };
@@ -51,13 +52,12 @@ export default function CompleterQCM() {
       <div className="question">
         <h2>La question : {params.index + 1}</h2>
         <span>{params.question.question}</span>
-        <br />
+
         {params.question.responses.map((response, index) => {
           return (
             <AnswerFragment response={response} index={index} key={index} />
           );
         })}
-        <br />
       </div>
     );
   }

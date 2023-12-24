@@ -37,7 +37,7 @@ export default function CommancerQCM() {
       });
 
       nextStep();
-    }
+    } else console.log("you must select a language and a level");
   };
 
   return (
