@@ -15,17 +15,15 @@ export default function AvisPage() {
   }, []);
   console.log(avis);
 
-  const LoadedAvis = () => {
-    if (isLoading) return <div>Loading...</div>;
-    if (avis?.length == 0) return <div>Aucun avis posté</div>;
-    return(    
-      avis?.map((avis, index) => {
-        return <AvisFragment key={index} avis={avis} />;
-      });
-    
-    
-    )
-  }
+const LoadedAvis = () => {
+  if (isLoading) return <div>Loading...</div>;
+  if (avis?.length === 0) return <div>Aucun avis posté</div>;
+
+  return avis?.map((avis, index) => {
+    return <AvisFragment key={index} avis={avis} />;
+  });
+};
+
 
   return (
     <div>
