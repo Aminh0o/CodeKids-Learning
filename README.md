@@ -15,4 +15,4 @@ Pour que le projet marche :
     pachage-lock.json
     yarn-lock...
 - dir : npm install
-- dir : npm start / npm run start
+- dir : npm run dev

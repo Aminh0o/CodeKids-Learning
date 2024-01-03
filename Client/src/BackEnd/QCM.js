@@ -41,7 +41,7 @@ export default class QCM {
     });
     return {
       niveau: this.niveau,
-      langugae: this.language,
+      language: this.language,
       note: this.note,
       questions: data,
       date: new Date(),

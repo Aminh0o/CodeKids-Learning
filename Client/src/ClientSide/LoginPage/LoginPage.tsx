@@ -1,9 +1,16 @@
 import "./LoginPage.css";
 import { useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "/src/App";
 import Visiteur from "/src/BackEnd/Visiteur";
 import User from "/src/BackEnd/User";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Link,
+} from "react-router-dom";
+import ForgottenPasswordPage from "./ForgottenPasswordPage";
 
 export default function LoginPage(params) {
   const { connected, setConnected } = useContext(UserContext);
@@ -76,8 +83,8 @@ export default function LoginPage(params) {
           </form>
 
           <span className="forgot_password-register">
-            <Link to="#nsit-Mot-de-Passe_3ammou">Forgot Password?</Link> | Don't
-            have an account? <Link to="/Register">SIGN UP</Link>
+            <Link to="/ForgotPassword">Forgot Password?</Link> | Don't have an
+            account? <Link to="/Register">SIGN UP</Link>
           </span>
         </div>
       </div>

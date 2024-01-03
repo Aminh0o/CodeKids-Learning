@@ -14,6 +14,7 @@ import MainPage from "./ClientSide/MainPage/MainPage";
 import Header from "./ClientSide/Header-Footer/Header";
 import Footer from "./ClientSide/Header-Footer/Footer";
 import ProfilePage from "./ClientSide/ProfilePage/ProfilePage";
+import ForgottenPasswordPage from "./ClientSide/LoginPage/ForgottenPasswordPage";
 
 export const UserContext = createContext([]);
 
@@ -35,6 +36,13 @@ export default function App() {
     getUserFromStorage();
   }, []);
 
+  // need ForgetNumber
+  /*
+          <Route
+            path="/ForgotPassword"
+            element={<ForgottenPasswordPage />}
+          />
+  */
   return (
     <UserContext.Provider value={{ connected, setConnected }}>
       <Router>

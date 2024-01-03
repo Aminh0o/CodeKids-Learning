@@ -8,9 +8,10 @@ import {
   where,
   query,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
+import { sendPasswordResetEmail } from "firebase/auth";
 import QCM from "./QCM";
-import FireBaseQCM from "./FireBaseQCM.js";
 import Question from "./Question.js";
 
 export default class User {
@@ -25,6 +26,7 @@ export default class User {
   currentQCM;
   finalQCM;
   QCMs = [];
+  isFetchingActive = false;
 
   // constructor params = {nom, email, id, prenom, dateNaissance, languagePrefere}
   constructor(params) {
@@ -74,7 +76,27 @@ export default class User {
     User.#instance = null;
   }
 
+  // params = updatedData = { nom,prenom,languagePrefere }
+  async updateInfo(updatedData) {
+    console.log(updatedData);
+    await updateDoc(doc(db, "Users", this.userID), {
+      nom: updatedData.nom,
+      prenom: updatedData.prenom,
+      languagePrefere: updatedData.languagePrefere,
+    })
+      .then(() => {
+        console.log("updated");
+      })
+      .catch(() => {
+        console.log("failled to update");
+      });
+    this.nom = updatedData.nom;
+    this.prenom = updatedData.prenom;
+    this.languagePrefere = updatedData.languagePrefere;
+  }
+
   // params = {niveau, language}
+
   async commancerQCM(params) {
     this.currentQCM = new QCM();
     this.currentQCM.niveau = params.niveau;
@@ -83,8 +105,8 @@ export default class User {
       query(
         collection(db, "Questions"),
         where("niveau", "==", params.niveau),
-        where("language", "==", params.language),
-      ),
+        where("language", "==", params.language)
+      )
     )
       .then((querySnapShot) => {
         let documents = querySnapShot.docs;
@@ -105,13 +127,17 @@ export default class User {
               language: params.language,
               question: documents.data().question,
               responses: documents.data().responses,
-            }),
+            })
           );
         });
       })
       .catch(() => {
         console.log("failled to get questions");
       });
+  }
+
+  static async resetPassword(email) {
+    await sendPasswordResetEmail(email);
   }
 
   annulerQCM() {
@@ -124,5 +150,35 @@ export default class User {
     this.finalQCM.calculerNote();
   }
 
-  getQCMHistory() {}
+  async getQCMHistory() {
+    if (this.isFetchingActive) return;
+    console.log(this.QCMs);
+    this.QCMs = [];
+    this.isFetchingActive = true;
+    await getDocs(collection(doc(db, "Users", this.userID), "PastQCMs"))
+      .then((querySnapShot) => {
+        querySnapShot.forEach((doc) => {
+          let pastQCM = new QCM();
+          pastQCM.niveau = doc.data().niveau;
+          pastQCM.language = doc.data().language;
+          pastQCM.questions = doc.data().questions;
+          pastQCM.note = doc.data().note;
+          pastQCM.date = doc.data().date;
+          this.QCMs.push(pastQCM);
+        });
+        console.log(this.QCMs);
+      })
+      .catch(() => {
+        console.log("failled to get past QCMs");
+      });
+    this.isFetchingActive = false;
+  }
+
+  calculerMoyen() {
+    let sum = 0;
+    this.QCMs.map((QCM) => {
+      sum += QCM.note;
+    });
+    return sum / this.QCMs.length;
+  }
 }
