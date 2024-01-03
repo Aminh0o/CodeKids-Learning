@@ -70,6 +70,12 @@ input:hover {
   opacity: 1;
 }
 
+input:disabled,
+select:disabled {
+  background-color: darkgray;
+  color: black;
+}
+
 .call_to_btn {
   background-color: #fec913;
   color: #082465;

@@ -358,3 +358,15 @@ a:focus {
 }
 
 /* end footer section*/
+
+/* Added by Moahmmed*/
+.ProfilePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ProfilePage > *{
+  margin: 10px;
+}

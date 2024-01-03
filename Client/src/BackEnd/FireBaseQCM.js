@@ -11,25 +11,28 @@ import {
 import { db } from "../Config/config-firebase.js";
 import Question from "./Question";
 
+// not in use
 export default class FireBaseQCM extends QCM {
+  
   QCMID;
+  date;
 
   constructor(params) {
     super();
     this.QCMID = params.id;
     this.niveau = params.niveau;
     this.language = params.language;
+    this.date = params.date
     this.getQuestions();
   }
-
   // get random questions for this QCM
   async getQuestions() {
     await getDocs(
       query(
         collection(db, "Questions"),
         where("niveau", "==", this.niveau),
-        where("language", "==", this.language),
-      ),
+        where("language", "==", this.language)
+      )
     )
       .then((querySnapShot) => {
         const documents = querySnapShot.docs;
@@ -49,7 +52,7 @@ export default class FireBaseQCM extends QCM {
               responses: docSnapShot.data().responses,
               niveau: docSnapShot.data().niveau,
               language: docSnapShot.data().language,
-            }),
+            })
           );
         });
       })

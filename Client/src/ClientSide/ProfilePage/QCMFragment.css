@@ -1,0 +1,37 @@
+.oldQCMs{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.moyen {
+  color: #082465;
+  background: antiquewhite;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.OneQCM {
+  color: #082465;
+  background: antiquewhite;
+  max-width: 500px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+} 
+
+.OneQCM span {
+}
