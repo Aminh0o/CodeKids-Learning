@@ -14,15 +14,18 @@ import Admin from "./Backend/Admin.js";
 import { useEffect } from "react";
 
 export default function App() {
-  const isSessionActive = localStorage.getItem("isAdminConnected");
+  //const isSessionActive = localStorage.getItem("isAdminConnected");
 
   //localStorage.clear();
+  // TOFIX
+  /*
   if (isSessionActive) {
+    
     // assign the admin instance from session
     //Admin.createInstance();
     <Navigate to="/home" />;
   }
-
+*/
   return (
     <Router>
       <Routes>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Admin from "../../Backend/Admin.js";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [canLogin, setCanLogin] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputs = () => {
     if (email.trim() == "" || password.trim() == "") {
@@ -24,7 +26,7 @@ export default function AuthPage() {
             setEmail(e.target.value);
             handleInputs();
           }}
-          type="email"
+          type="text"
         />
         <br />
         <span>{email.trim() == "" ? "Email cannot be empty" : ""}</span>
@@ -43,8 +45,9 @@ export default function AuthPage() {
         <button
           disabled={!canLogin}
           type="submit"
-          onClick={() => {
-            login({ email, password });
+          onClick={(e) => {
+            e.preventDefault();
+            login({ email, password,navigate });
           }}
         >
           Login
@@ -55,5 +58,8 @@ export default function AuthPage() {
 }
 
 async function login(params) {
+  
   await Admin.seIdentifier(params);
+  params.navigate("/Home")
+
 }
