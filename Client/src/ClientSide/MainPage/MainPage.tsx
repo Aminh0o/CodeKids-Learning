@@ -10,6 +10,7 @@ export default function MainPage() {
       <Hello />
       <About />
       <Teachers />
+      <Rules />
       <Contact />
     </div>
   );
@@ -48,7 +49,7 @@ function Hello() {
 
 function About() {
   return (
-    <div>
+    <div id="about">
       <section className="about_section layout_padding">
         <div className="container">
           <h2 className="main-heading ">About CodeKids</h2>
@@ -148,6 +149,10 @@ function Teachers() {
       </section>
     </>
   );
+}
+
+function Rules(){
+
 }
 
 function Contact() {
