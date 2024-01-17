@@ -1,5 +1,5 @@
 /*
-  Important file : dont know why (might be Admin's location finder)
+  Important file : dont know why (might be Admin's location finder OR difines Admin as module)
 */
 
 declare module "../../Backend/Admin.js" {

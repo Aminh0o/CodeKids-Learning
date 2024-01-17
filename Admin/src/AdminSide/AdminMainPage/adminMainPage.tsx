@@ -15,19 +15,18 @@ export default function AdminMainPage() {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(-1);
-  const [connected, setConnected] = useState(true);
+  const [connected, setConnected] = useState(Admin.isAdminConnected());
 
   useEffect(() => {
-    setConnected(Admin.isAdminConnected());
-    if (!connected) {
-      navigate("/");
-    }
+    if (!connected) navigate("/");
   }, [connected]);
+
   // Disconnecting
   const handleLogout = () => {
     Admin.deConnecter();
     navigate("/");
   };
+
   // opne current page
   const setCurrentPage = () => {
     switch (page) {

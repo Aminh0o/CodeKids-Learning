@@ -7,7 +7,6 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  getDoc,
 } from "firebase/firestore";
 import Question from "./Question";
 import Avis from "./Avis";
@@ -22,24 +21,25 @@ export default class Admin {
   isFetchingActive = false;
 
   constructor() {
-    if (Admin.#instance) throw new Error("New instance cannot be created!");
+    if (Admin.#instance)
+      throw new Error("New instance cannot be created again!");
   }
 
-  // params = {email, password}
+  // params = {email, password , rememberMe}
   static async seIdentifier(params) {
     await getDocs(collection(db, "Admin"))
       .then((querySnapShot) => {
-        if (!querySnapShot.empty) {
-          querySnapShot.forEach((docSnapShot) => {
-            if (
-              docSnapShot.data().email == params.email &&
-              docSnapShot.data().password == params.password
-            ) {
-              Admin.#instance = new Admin();
-              console.log("login success");
-            } else console.log("login filled");
-          });
-        }
+        if (querySnapShot.empty) throw new Error("Admin n'existe pas");
+        querySnapShot.forEach((docSnapShot) => {
+          if (
+            docSnapShot.data().email == params.email &&
+            docSnapShot.data().password == params.password
+          ) {
+            Admin.#instance = new Admin();
+            console.log("login success");
+            if (params.rememberMe) localStorage.setItem("connected", "true");
+          } else console.log("login filled");
+        });
       })
       .catch(() => {
         console.log("login filled");
@@ -48,6 +48,7 @@ export default class Admin {
 
   static deConnecter() {
     Admin.#instance = null;
+    localStorage.removeItem("connected");
   }
 
   static getInstance() {
@@ -57,11 +58,10 @@ export default class Admin {
     return Admin.#instance;
   }
 
-  static createInstance() {
-    Admin.#instance = new Admin();
-  }
-
   static isAdminConnected() {
+    const getAdminFromLS = localStorage.getItem("connected");
+    // rani 3aref 'true' rah m9awda
+    if (getAdminFromLS == "true" && Admin.#instance == null) Admin.#instance = new Admin();
     return Admin.#instance != null;
   }
 
@@ -73,7 +73,7 @@ export default class Admin {
     this.questions = [];
     await getDocs(
       collection(db, "Questions"),
-      max == -1 ? limit(50) : limit(max),
+      max == -1 ? limit(50) : limit(max)
     )
       .then((querySnapShot) => {
         querySnapShot.forEach((docSnapShot) => {
@@ -84,7 +84,7 @@ export default class Admin {
               language: docSnapShot.data().language,
               question: docSnapShot.data().question,
               responses: docSnapShot.data().responses,
-            }),
+            })
           );
         });
       })
@@ -152,7 +152,7 @@ export default class Admin {
               message: docSnapShot.data().message,
               sujet: docSnapShot.data().sujet,
               id: docSnapShot.id,
-            }),
+            })
           );
         });
       })
@@ -191,7 +191,7 @@ export default class Admin {
               prenom: docSnapShot.data().prenom,
               dateNaissance: docSnapShot.data().dateNaissance,
               languagePrefere: docSnapShot.data().languagePrefere,
-            }),
+            })
           );
         });
       })

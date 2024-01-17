@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Admin from "../../Backend/Admin.js";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+
   const [canLogin, setCanLogin] = useState(false);
   const navigate = useNavigate();
 
+  const isConnectedLocalStorage = localStorage.getItem("connected");
+  useEffect(() => {
+    if (isConnectedLocalStorage) navigate("/Home");
+  }, []);
+
   const handleInputs = () => {
-    if (email.trim() == "" || password.trim() == "") {
+    if (inputs.email.trim() == "" || inputs.password.trim() == "")
       setCanLogin(false);
-    } else {
-      setCanLogin(true);
-    }
+    else setCanLogin(true);
+  };
+
+  const handleLogin = async (params) => {
+    await Admin.seIdentifier(params);
+    navigate("/Home");
   };
 
   return (
@@ -23,31 +35,41 @@ export default function AuthPage() {
         <label>email</label>
         <input
           onChange={(e) => {
-            setEmail(e.target.value);
+            setInputs({ ...inputs, email: e.target.value });
             handleInputs();
           }}
           type="text"
         />
         <br />
-        <span>{email.trim() == "" ? "Email cannot be empty" : ""}</span>
+        <span>{inputs.email.trim() == "" ? "Email cannot be empty" : ""}</span>
         <br />
         <label> password</label>
         <input
           onChange={(e) => {
-            setPassword(e.target.value);
+            setInputs({ ...inputs, password: e.target.value });
             handleInputs();
           }}
           type="password"
         />
         <br />
-        <span>{password.trim() == "" ? "Password cannot be empty" : ""}</span>
+        <span>
+          {inputs.password.trim() == "" ? "Password cannot be empty" : ""}
+        </span>
+        <br />
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            setInputs({ ...inputs, rememberMe: e.target.checked });
+          }}
+        />
+        <label>Remeber me</label>
         <br />
         <button
           disabled={!canLogin}
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            login({ email, password,navigate });
+            handleLogin(inputs);
           }}
         >
           Login
@@ -55,11 +77,4 @@ export default function AuthPage() {
       </form>
     </div>
   );
-}
-
-async function login(params) {
-  
-  await Admin.seIdentifier(params);
-  params.navigate("/Home")
-
 }
