@@ -7,6 +7,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  where,
 } from "firebase/firestore";
 import Question from "./Question";
 import Avis from "./Avis";
@@ -61,7 +62,8 @@ export default class Admin {
   static isAdminConnected() {
     const getAdminFromLS = localStorage.getItem("connected");
     // rani 3aref 'true' rah m9awda
-    if (getAdminFromLS == "true" && Admin.#instance == null) Admin.#instance = new Admin();
+    if (getAdminFromLS == "true" && Admin.#instance == null)
+      Admin.#instance = new Admin();
     return Admin.#instance != null;
   }
 
@@ -176,7 +178,8 @@ export default class Admin {
       });
   }
 
-  async getUsers() {
+  // params = banned
+  async getUsers(banned) {
     if (this.isFetchingActive) return;
     this.isFetchingActive = true;
     this.users = [];
@@ -191,6 +194,7 @@ export default class Admin {
               prenom: docSnapShot.data().prenom,
               dateNaissance: docSnapShot.data().dateNaissance,
               languagePrefere: docSnapShot.data().languagePrefere,
+              banned: docSnapShot.data().banned,
             })
           );
         });
@@ -198,10 +202,19 @@ export default class Admin {
       .catch(() => {
         console.log("failled to load users");
       });
+    
     this.isFetchingActive = false;
-    const unbannedUsers = this.users.filter((user) => {
-      return user.banned ? false : true;
-    });
+    let unbannedUsers;
+    if (banned) {
+      unbannedUsers = this.users.filter((user) => {
+        return !user.banned ? false : true;
+      });
+    } else {
+      unbannedUsers = this.users.filter((user) => {
+        return user.banned ? false : true;
+      });
+    }
+    console.log(unbannedUsers);
     return unbannedUsers;
   }
 
@@ -209,7 +222,7 @@ export default class Admin {
   async banUser(params) {
     console.log(params);
     await updateDoc(doc(db, "Users", params.id), {
-      banned: true,
+      banned: !params.banned,
     })
       .then(() => {
         console.log("User banned");
@@ -217,5 +230,6 @@ export default class Admin {
       .catch(() => {
         console.log("failled to ban user");
       });
+      console.log(params);
   }
 }

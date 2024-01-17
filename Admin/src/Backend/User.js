@@ -5,6 +5,7 @@ export default class User {
   id;
   dateNaissance;
   languagePrefere;
+  banned = false;
 
   constructor(params) {
     this.email = params.email;
@@ -13,5 +14,6 @@ export default class User {
     this.id = params.id;
     this.dateNaissance = params.dateNaissance;
     this.languagePrefere = params.languagePrefere;
+    this.banned = params.banned || false;
   }
 }
