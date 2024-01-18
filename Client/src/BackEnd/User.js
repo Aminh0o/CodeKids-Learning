@@ -153,15 +153,18 @@ export default class User {
 
   async getQCMHistory() {
     if (this.isFetchingActive) return;
-    console.log(this.QCMs);
     this.QCMs = [];
     this.isFetchingActive = true;
-    await getDocs(collection(doc(db, "Users", this.userID), "PastQCMs"))
+    const collectionRef = collection(doc(db, "Users", this.userID), "PastQCMs");
+    console.log(collectionRef);
+    await getDocs(collectionRef)
       .then((querySnapShot) => {
+        console.log(querySnapShot);
         querySnapShot.forEach((doc) => {
-          let pastQCM = new QCM();
-          pastQCM.niveau = doc.data().niveau;
-          pastQCM.language = doc.data().language;
+          let pastQCM = new QCM({
+            niveau: doc.data().niveau,
+            language: doc.data().language,
+          });
           pastQCM.questions = doc.data().questions;
           pastQCM.note = doc.data().note;
           pastQCM.date = doc.data().date;
@@ -169,10 +172,12 @@ export default class User {
         });
         console.log(this.QCMs);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         console.log("failled to get past QCMs");
       });
     this.isFetchingActive = false;
+    return this.QCMs;
   }
 
   calculerMoyen() {
