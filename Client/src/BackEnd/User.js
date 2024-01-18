@@ -7,7 +7,6 @@ import {
   getDocs,
   where,
   query,
-  addDoc,
   updateDoc,
 } from "firebase/firestore";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -98,9 +97,10 @@ export default class User {
   // params = {niveau, language}
 
   async commancerQCM(params) {
-    this.currentQCM = new QCM();
-    this.currentQCM.niveau = params.niveau;
-    this.currentQCM.language = params.language;
+    this.currentQCM = new QCM({
+      niveau: params.niveau,
+      language: params.language,
+    });
     await getDocs(
       query(
         collection(db, "Questions"),
@@ -119,14 +119,15 @@ export default class User {
         // TOCHANGE
         documents = documents.slice(0, 5);
         console.log(documents);
-        documents.forEach((documents) => {
+        documents.forEach((doc) => {
           this.currentQCM.questions.push(
             new Question({
-              questionId: documents.id,
+              questionId: doc.id,
               niveau: params.niveau,
               language: params.language,
-              question: documents.data().question,
-              responses: documents.data().responses,
+              question: doc.data().question,
+              responses: doc.data().responses,
+              code: doc.data().code,
             })
           );
         });
@@ -152,15 +153,18 @@ export default class User {
 
   async getQCMHistory() {
     if (this.isFetchingActive) return;
-    console.log(this.QCMs);
     this.QCMs = [];
     this.isFetchingActive = true;
-    await getDocs(collection(doc(db, "Users", this.userID), "PastQCMs"))
+    const collectionRef = collection(doc(db, "Users", this.userID), "PastQCMs");
+    console.log(collectionRef);
+    await getDocs(collectionRef)
       .then((querySnapShot) => {
+        console.log(querySnapShot);
         querySnapShot.forEach((doc) => {
-          let pastQCM = new QCM();
-          pastQCM.niveau = doc.data().niveau;
-          pastQCM.language = doc.data().language;
+          let pastQCM = new QCM({
+            niveau: doc.data().niveau,
+            language: doc.data().language,
+          });
           pastQCM.questions = doc.data().questions;
           pastQCM.note = doc.data().note;
           pastQCM.date = doc.data().date;
@@ -168,10 +172,12 @@ export default class User {
         });
         console.log(this.QCMs);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         console.log("failled to get past QCMs");
       });
     this.isFetchingActive = false;
+    return this.QCMs;
   }
 
   calculerMoyen() {

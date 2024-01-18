@@ -1,11 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  Link,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import User from "./BackEnd/User";
 import RegisterPage from "./ClientSide/RegisterPage/RegisterPage";
 import LoginPage from "./ClientSide/LoginPage/LoginPage";
@@ -14,38 +8,30 @@ import MainPage from "./ClientSide/MainPage/MainPage";
 import Header from "./ClientSide/Header-Footer/Header";
 import Footer from "./ClientSide/Header-Footer/Footer";
 import ProfilePage from "./ClientSide/ProfilePage/ProfilePage";
-import ForgottenPasswordPage from "./ClientSide/LoginPage/ForgottenPasswordPage";
 
 export const UserContext = createContext([]);
 
 export default function App() {
   const [connected, setConnected] = useState(false);
+  const [connecting, setConnecting] = useState(true);
 
   useEffect(() => {
     const getUserFromStorage = async () => {
       const user = localStorage.getItem("user");
-      console.log("user", user);
-
-      if (user) {
-        console.log("user", user);
-
+      if (user && User.getInstance() == null) {
         await User.createInstance(user);
         setConnected(true);
+        console.log(User.getInstance());
+        
       }
+      setConnecting(false);
     };
     getUserFromStorage();
   }, []);
-
-  // need ForgetNumber
-  /*
-          <Route
-            path="/ForgotPassword"
-            element={<ForgottenPasswordPage />}
-          />
-  */
   return (
     <UserContext.Provider value={{ connected, setConnected }}>
       <Router>
+        {connecting && <div>Connecting ...</div>}
         <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />

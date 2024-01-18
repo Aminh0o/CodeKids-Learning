@@ -1,5 +1,5 @@
 import "./LoginPage.css";
-import { useState, useContext } from "react";
+import { useState, useContext, MouseEvent } from "react";
 import { UserContext } from "/src/App";
 import Visiteur from "/src/BackEnd/Visiteur";
 import User from "/src/BackEnd/User";
@@ -22,16 +22,13 @@ export default function LoginPage(params) {
   });
   const [error, setError] = useState("");
 
-  const login = async (submitEvent) => {
-    submitEvent.preventDefault();
+  const handleLogin = async (e:MouseEvent) => {
+    e.preventDefault();
 
     await Visiteur.seConnecter(data);
     if (User.isUserConnected()) {
       navigate("" + params.lastPage);
       setConnected(true);
-
-      if (data.remeberMe)
-        localStorage.setItem("user", User.getInstance().userID);
     } else {
       setError("Erreurs dans votre informations");
     }
@@ -71,12 +68,7 @@ export default function LoginPage(params) {
             </div>
 
             <br />
-            <button
-              className="call_to_btn"
-              onClick={(e) => {
-                login(e);
-              }}
-            >
+            <button className="call_to_btn" onClick={(e) => handleLogin(e)}>
               SignIn
             </button>
             <br />

@@ -17,6 +17,7 @@ export default class Visiteur {
         console.log("SingIn failled");
       });
     await User.createInstance(auth.currentUser.uid);
+    if (params.remeberMe) localStorage.setItem("user", auth.currentUser.uid);
   }
 
   // params : {nom, prenom, dateNaissance, email, languagePrefere};

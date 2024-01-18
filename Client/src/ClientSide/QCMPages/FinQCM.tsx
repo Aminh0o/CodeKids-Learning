@@ -10,7 +10,6 @@ export default function FinQCM() {
   const finalQCM = User.getInstance().finalQCM;
   const [canSave, setCanSave] = useState(true);
   const history = useNavigate();
-  console.log(finalQCM);
 
   const WebReaction = () => {
     if (finalQCM.note < finalQCM.questions.length / 2)

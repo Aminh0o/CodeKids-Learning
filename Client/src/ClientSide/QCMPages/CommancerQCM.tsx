@@ -7,7 +7,7 @@ export default function CommancerQCM() {
   const [isSelected, setIsSelected] = useState({
     isIt: false,
     oldValue: "C",
-  });
+  });  
 
   // preDefined newQCM :
   //setNewQCM({ ...newQCM, language: "C", niveau: "facile" });

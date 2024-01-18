@@ -12,7 +12,14 @@ export const QCMContext = createContext({});
 
 export default function QCMPage() {
   const { connected, setConnected } = useContext(UserContext);
-  const [newQCM, setNewQCM] = useState(new QCM());
+  const [newQCM, setNewQCM] = useState(
+    new QCM({
+      // default values
+      niveau: "facile",
+      language: "C",
+    })
+  );
+
   const [etape, setEtape] = useState(0);
 
   const nextStep = () => {

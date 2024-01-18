@@ -4,7 +4,7 @@ export default class Question {
   niveau;
   language;
   responses = [];
-  gotCorrect = false;
+  code;
 
   // params = {question, questionId, niveau, language, responses}
   constructor(params) {
@@ -13,9 +13,6 @@ export default class Question {
     this.niveau = params.niveau;
     this.language = params.language;
     this.responses = params.responses;
-  }
-
-  setGotCorrect(gotCorrect) {
-    this.gotCorrect = gotCorrect;
+    this.code = params.code;
   }
 }

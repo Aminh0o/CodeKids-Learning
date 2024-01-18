@@ -13,10 +13,9 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!connected) navigate("/Login");
+    return;
     const fetchQCMs = async () => {
       await User.getInstance().getQCMHistory();
-      setQCMs(User.getInstance().QCMs);
-      //console.log(User.getInstance().QCMs);
     };
     fetchQCMs();
   }, []);
@@ -25,10 +24,15 @@ export default function ProfilePage() {
     setConnected(false);
     User.deConnecter();
     localStorage.removeItem("user");
+    navigate("/");
   };
 
   const handleCheckQCMHistory = async () => {
-    await User.getInstance().getQCMHistory();
+    if (!canCheckQCM) {
+      await User.getInstance().getQCMHistory();
+      setQCMs(User.getInstance().QCMs);
+    }
+    setCanCheckQCM(!canCheckQCM);
   };
 
   return (
@@ -42,7 +46,9 @@ export default function ProfilePage() {
       </button>
       <button
         className="call_to-btn"
-        onClick={() => setCanCheckQCM(!canCheckQCM)}
+        onClick={() => {
+          handleCheckQCMHistory();
+        }}
       >
         Check old QCMs
       </button>
@@ -66,12 +72,8 @@ function UserInfo(params) {
 
   const handleUpdateData = async () => {
     //e.preventDefault();
-    console.log("start");
-    console.log(User.getInstance());
-
     await User.getInstance().updateInfo(updatedData);
     params.setCanModify(false);
-    console.log("end");
   };
 
   return (
@@ -160,7 +162,7 @@ function QCMsFragment(params) {
   return (
     <div className="OldQCM">
       <div className="moyen">
-        Votre moyen dans les QCMs est : {User.getInstance().calculerMoyen()}
+        Votre moyen dans les QCMs est : {User.getInstance().calculerMoyen().toFixed(1)}
       </div>
       {params.QCMs?.map((QCM, index) => {
         return <QCMFragment QCM={QCM} key={index} index={index} />;

@@ -7,7 +7,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  getDoc,
+  where,
 } from "firebase/firestore";
 import Question from "./Question";
 import Avis from "./Avis";
@@ -22,24 +22,25 @@ export default class Admin {
   isFetchingActive = false;
 
   constructor() {
-    if (Admin.#instance) throw new Error("New instance cannot be created!");
+    if (Admin.#instance)
+      throw new Error("New instance cannot be created again!");
   }
 
-  // params = {email, password}
+  // params = {email, password , rememberMe}
   static async seIdentifier(params) {
     await getDocs(collection(db, "Admin"))
       .then((querySnapShot) => {
-        if (!querySnapShot.empty) {
-          querySnapShot.forEach((docSnapShot) => {
-            if (
-              docSnapShot.data().email == params.email &&
-              docSnapShot.data().password == params.password
-            ) {
-              Admin.#instance = new Admin();
-              console.log("login success");
-            } else console.log("login filled");
-          });
-        }
+        if (querySnapShot.empty) throw new Error("Admin n'existe pas");
+        querySnapShot.forEach((docSnapShot) => {
+          if (
+            docSnapShot.data().email == params.email &&
+            docSnapShot.data().password == params.password
+          ) {
+            Admin.#instance = new Admin();
+            console.log("login success");
+            if (params.rememberMe) localStorage.setItem("connected", "true");
+          } else console.log("login filled");
+        });
       })
       .catch(() => {
         console.log("login filled");
@@ -48,6 +49,7 @@ export default class Admin {
 
   static deConnecter() {
     Admin.#instance = null;
+    localStorage.removeItem("connected");
   }
 
   static getInstance() {
@@ -57,11 +59,11 @@ export default class Admin {
     return Admin.#instance;
   }
 
-  static createInstance() {
-    Admin.#instance = new Admin();
-  }
-
   static isAdminConnected() {
+    const getAdminFromLS = localStorage.getItem("connected");
+    // rani 3aref 'true' rah m9awda
+    if (getAdminFromLS == "true" && Admin.#instance == null)
+      Admin.#instance = new Admin();
     return Admin.#instance != null;
   }
 
@@ -73,7 +75,7 @@ export default class Admin {
     this.questions = [];
     await getDocs(
       collection(db, "Questions"),
-      max == -1 ? limit(50) : limit(max),
+      max == -1 ? limit(50) : limit(max)
     )
       .then((querySnapShot) => {
         querySnapShot.forEach((docSnapShot) => {
@@ -84,7 +86,8 @@ export default class Admin {
               language: docSnapShot.data().language,
               question: docSnapShot.data().question,
               responses: docSnapShot.data().responses,
-            }),
+              code: docSnapShot.data().code,
+            })
           );
         });
       })
@@ -116,7 +119,6 @@ export default class Admin {
   }
   // params = { question , questionID }
   async modifierQuestion(params) {
-    console.log(params);
     const docRef = doc(db, "Questions", params.questionID);
     //const question = params.question.filter();
     await updateDoc(docRef, params.question)
@@ -138,7 +140,7 @@ export default class Admin {
       });
   }
 
-  async getAvis() {
+  async getAvis(seen) {
     if (this.isFetchingActive) return;
     this.isFetchingActive = true;
     this.avis = [];
@@ -152,7 +154,8 @@ export default class Admin {
               message: docSnapShot.data().message,
               sujet: docSnapShot.data().sujet,
               id: docSnapShot.id,
-            }),
+              seen: docSnapShot.data().seen,
+            })
           );
         });
       })
@@ -160,7 +163,10 @@ export default class Admin {
         console.log("failled to load avis");
       });
     this.isFetchingActive = false;
-    return this.avis;
+    const filtredAvis = this.avis.filter((avis) => {
+      return seen ? avis.seen : !avis.seen;
+    });
+    return filtredAvis;
   }
 
   // params = {id,...avis}
@@ -176,7 +182,8 @@ export default class Admin {
       });
   }
 
-  async getUsers() {
+  // params = banned
+  async getUsers(banned) {
     if (this.isFetchingActive) return;
     this.isFetchingActive = true;
     this.users = [];
@@ -191,31 +198,46 @@ export default class Admin {
               prenom: docSnapShot.data().prenom,
               dateNaissance: docSnapShot.data().dateNaissance,
               languagePrefere: docSnapShot.data().languagePrefere,
-            }),
+              banned: docSnapShot.data().banned,
+            })
           );
         });
       })
       .catch(() => {
         console.log("failled to load users");
       });
+
     this.isFetchingActive = false;
-    const unbannedUsers = this.users.filter((user) => {
-      return user.banned ? false : true;
+    const filtredUsers = this.users.filter((user) => {
+      return banned ? user.banned : !user.banned;
     });
-    return unbannedUsers;
+    return filtredUsers;
   }
 
   // params = {id,...user}
   async banUser(params) {
-    console.log(params);
     await updateDoc(doc(db, "Users", params.id), {
-      banned: true,
+      // HAHA
+      banned: !params.banned,
     })
       .then(() => {
         console.log("User banned");
       })
       .catch(() => {
         console.log("failled to ban user");
+      });
+  }
+
+  async deleteAvis(id) {
+    await deleteDoc(doc(db, "Avis", id))
+      .then(() => {
+        this.avis.filter((avis) => {
+          return avis.id != id;
+        });
+        console.log("deleted");
+      })
+      .catch(() => {
+        console.log("failde to delete");
       });
   }
 }
