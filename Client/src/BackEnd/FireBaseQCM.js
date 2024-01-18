@@ -1,31 +1,21 @@
 import QCM from "./QCM";
-import {
-  collection,
-  getDocs,
-  orderBy,
-  query,
-  where,
-  startAt,
-  limit,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../Config/config-firebase.js";
 import Question from "./Question";
 
 // not in use
 export default class FireBaseQCM extends QCM {
-  
   QCMID;
   date;
 
   constructor(params) {
-    super();
+    super({ niveau: params.niveau, language: params.language });
     this.QCMID = params.id;
-    this.niveau = params.niveau;
-    this.language = params.language;
-    this.date = params.date
+    this.date = params.date;
     this.getQuestions();
   }
   // get random questions for this QCM
+  // appartly it is not used (dublicated in User.commancerQCM) HAHA
   async getQuestions() {
     await getDocs(
       query(
@@ -52,6 +42,7 @@ export default class FireBaseQCM extends QCM {
               responses: docSnapShot.data().responses,
               niveau: docSnapShot.data().niveau,
               language: docSnapShot.data().language,
+              code: docSnapShot.data().code,
             })
           );
         });

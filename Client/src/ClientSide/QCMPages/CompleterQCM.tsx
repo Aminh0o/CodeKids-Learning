@@ -2,6 +2,7 @@ import "./CompleterQCM.css";
 import User from "/src/BackEnd/User";
 import { useEffect, useState, useContext } from "react";
 import { QCMContext } from "./QCMPage";
+import { Prism as Code } from "react-syntax-highlighter";
 
 export default function CompleterQCM() {
   // 2 first methodes are unusefull in this
@@ -10,7 +11,7 @@ export default function CompleterQCM() {
   const [canGoNext, setCanGoNext] = useState(questions.length);
   useEffect(() => {
     setQuestions(newQCM.questions);
-    console.log(questions);
+    console.log(newQCM);
 
     // TOFIX all questns should be done
     //setCanGoNext(questions.length);
@@ -52,6 +53,11 @@ export default function CompleterQCM() {
       <div className="question">
         <h2>La question : {params.index + 1}</h2>
         <span>{params.question.question}</span>
+        {params.question.code ? (
+          <Code language="javascript">{params.question.code}</Code>
+        ) : (
+          <></>
+        )}
 
         {params.question.responses.map((response, index) => {
           return (

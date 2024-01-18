@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Admin from "../../Backend/Admin.js";
 import Question from "../../Backend/Question.js";
 import NewQuestionFragment from "./NewQuestionFragment.js";
+// documuntaion about CodeEditor : https://uiwjs.github.io/react-textarea-code-editor/
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 export default function QuestionPage() {
   const [questions, setQuestions] = useState([]);
@@ -18,13 +20,13 @@ export default function QuestionPage() {
     const [canEdit, setCanEdit] = useState(false);
     const [modifiedQuestion, setModifiedQuestion] = useState(params.question);
     const [modifiedResponses, setModifiedResponses] = useState(
-      modifiedQuestion.responses,
+      modifiedQuestion.responses
     );
 
     // the 4 responses : <ResponsesFragment>
     const ResponsesFragment = () => {
       const initialCorrect = modifiedResponses.findIndex(
-        (response) => response.isCorrect,
+        (response) => response.isCorrect
       );
 
       const [correct, setCorrect] = useState(initialCorrect + "");
@@ -38,7 +40,7 @@ export default function QuestionPage() {
             modifiedResponses.map((response, i) => ({
               ...response,
               isCorrect: i == parseInt(index),
-            })),
+            }))
           );
         };
 
@@ -78,13 +80,11 @@ export default function QuestionPage() {
     };
     // supprimer button pressed
     const handleSupprimerQuestion = (params) => {
-      console.log(params);
       const userDecision = window.confirm(
-        "Are you sure you want to delete this question?\n" + params.question,
+        "Are you sure you want to delete this question?\n" + params.question
       );
       if (!userDecision) return;
       const tmpArray = questions.filter((item) => item != params);
-      console.log(params);
       setQuestions(tmpArray);
       Admin.getInstance().supprimerQuestion(params.questionID);
     };
@@ -102,10 +102,10 @@ export default function QuestionPage() {
         language: modifiedQuestion.language,
         niveau: modifiedQuestion.niveau,
         responses: newModifiedResponses,
+        code: modifiedQuestion.code,
       };
-      console.log(newModifiedQuestion);
       const userDecision = window.confirm(
-        "Are you sure you want to modify this question?\n" + params.question,
+        "Are you sure you want to modify this question?\n" + params.question
       );
       if (!userDecision) return;
 
@@ -119,10 +119,10 @@ export default function QuestionPage() {
     return (
       <>
         <div
-          id={params.key}
+          id={params.index}
           style={{ border: "1px solid black", margin: "10px" }}
         >
-          <input
+          <select
             disabled={!canEdit}
             defaultValue={modifiedQuestion.language}
             onChange={(e) => {
@@ -131,22 +131,32 @@ export default function QuestionPage() {
                 language: e.target.value,
               });
             }}
-          />
+          >
+            <option value="C">C</option>
+            <option value="Java">Java</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+          </select>
           <br />
-          <input
+          <select
             disabled={!canEdit}
             defaultValue={modifiedQuestion.niveau}
-            onChange={(e) => {
+            onChange={(e) =>
               setModifiedQuestion({
                 ...modifiedQuestion,
                 niveau: e.target.value,
-              });
-            }}
-          />
+              })
+            }
+          >
+            <option value="facile">facile</option>
+            <option value="moyen">moyen</option>
+            <option value="difficile">difficile</option>
+          </select>
           <br />
           <input
             disabled={!canEdit}
             defaultValue={modifiedQuestion.question}
+            type="textarea"
             onChange={(e) => {
               setModifiedQuestion({
                 ...modifiedQuestion,
@@ -155,6 +165,22 @@ export default function QuestionPage() {
             }}
           />
           <br />
+          <label> code associé : </label>
+          <CodeEditor
+            disabled={!canEdit}
+            value={modifiedQuestion.code}
+            language={modifiedQuestion.language.toLowerCase()}
+            onChange={(evn) => {
+              setModifiedQuestion({
+                ...modifiedQuestion,
+                code: evn.target.value,
+              });
+            }}
+            data-color-mode="light"
+            style={{
+              fontSize: 17,
+            }}
+          />
           <ResponsesFragment />
 
           <button
@@ -167,7 +193,6 @@ export default function QuestionPage() {
           {canEdit && (
             <button
               onClick={() => {
-                console.log(modifiedQuestion);
                 handleEngesterement(modifiedQuestion);
               }}
             >
@@ -177,7 +202,6 @@ export default function QuestionPage() {
           <button
             disabled={canEdit}
             onClick={() => {
-              console.log(modifiedQuestion.questionID);
               handleSupprimerQuestion(modifiedQuestion);
             }}
           >
@@ -211,25 +235,6 @@ export default function QuestionPage() {
     e.preventDefault();
     setQuestions(Admin.getInstance().questions);
     //setCanResetSearch(false);
-  };
-
-  const LoadedQuestions = () => {
-    // No touching in ".?" or it break . NO TOUCH IN CODE !!!
-    if (isLoading) return <span>Loading...</span>;
-    if (questions?.length == 0) return <span>No questions found</span>;
-
-    return (
-      <>
-        <span>il existe {questions?.length} questions</span>
-        {questions?.map((question, index) => {
-          return (
-            <>
-              <QuestionFragment question={question} key={index} />
-            </>
-          );
-        })}
-      </>
-    );
   };
 
   return (
@@ -267,7 +272,26 @@ export default function QuestionPage() {
             Reset les questions
           </button>
         </form>
-        <LoadedQuestions />
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : questions?.length == 0 ? (
+          <span>No questions found</span>
+        ) : (
+          <>
+            <span>il existe {questions?.length} questions</span>
+            {questions?.map((question, index) => {
+              return (
+                <>
+                  <QuestionFragment
+                    question={question}
+                    key={index}
+                    index={index}
+                  />
+                </>
+              );
+            })}
+          </>
+        )}
       </div>
     </>
   );

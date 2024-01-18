@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import Admin from "../../Backend/Admin.js";
+// documuntaion about CodeEditor : https://uiwjs.github.io/react-textarea-code-editor/
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 // params = {setQuestions,questions}
 export default function NewQuestionFragment(params) {
   const [question, setQuestion] = useState({
     language: "C",
     niveau: "facile",
-    question: "",
+    question: "int e = 5;",
+    code: "",
     /* responses: [{isCorrect: false,response: "" }],  */
+  });
+  const [code, setCode] = useState({
+    code: "",
+    language: "c", // c,js,java,py
   });
   // on peut merger responses dans question (plus de travail)
   const [responses, setResponses] = useState([
@@ -25,7 +32,7 @@ export default function NewQuestionFragment(params) {
       responses.map((response, i) => ({
         ...response,
         isCorrect: i == parseInt(index),
-      })),
+      }))
     );
   };
 
@@ -34,7 +41,7 @@ export default function NewQuestionFragment(params) {
       responses.map((response, i) => ({
         ...response,
         response: i == index ? value : response.response,
-      })),
+      }))
     );
     console.log(responses);
   };
@@ -42,10 +49,13 @@ export default function NewQuestionFragment(params) {
   const handleAjouterQuestion = (submitEvent) => {
     // must have to not refersh page
     submitEvent.preventDefault();
+    console.log(question);
+    
     const newQuestion = { ...question, responses };
     console.log(newQuestion);
 
     Admin.getInstance().ajouterQuestion(newQuestion);
+    
     const AfterEmptyQuestion = {
       ...question,
       question: "",
@@ -56,10 +66,13 @@ export default function NewQuestionFragment(params) {
         response: "",
       };
     });
+    
+    // TOFIX : new question not reset to empty after add
     setQuestion(AfterEmptyQuestion);
     setResponses(AfterEmptyResponses);
     // TOFIX : cant delete new Question (lack of quetionID)
     params.setQuestions([...params.questions, newQuestion]);
+    
   };
 
   // NOT USEFULL FOR NOW (can be used to shorten code)
@@ -81,6 +94,19 @@ export default function NewQuestionFragment(params) {
         onChange={(e) => setQuestion({ ...question, question: e.target.value })}
       />
       <br />
+      <label >le code associé (optionele):</label>
+      <CodeEditor
+        language={question.language.toLowerCase()}
+        onChange={(evn) => {
+          setQuestion({ ...question, code: evn.target.value });
+        }}
+        data-color-mode="light"
+        style={{
+          fontSize: 17,
+        }}
+      />
+      <br />
+      <label>le niveau : </label>
       <select
         onChange={(e) => setQuestion({ ...question, niveau: e.target.value })}
       >
@@ -91,7 +117,10 @@ export default function NewQuestionFragment(params) {
       <br />
       <label>la langue :</label>
       <select
-        onChange={(e) => setQuestion({ ...question, language: e.target.value })}
+        onChange={(e) => {
+          setQuestion({ ...question, language: e.target.value });
+        
+        }}
       >
         <option value="C">C</option>
         <option value="Java">Java</option>

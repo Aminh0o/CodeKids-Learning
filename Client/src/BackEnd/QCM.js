@@ -8,8 +8,12 @@ export default class QCM {
   questions = [];
   note = 0;
 
-  // params = {id, niveau, language, questions}
-  constructor() {}
+  // params = {niveau, language}
+  // if you looing for QCm from firebase look FireBaseQCM.js (dont know why) 
+  constructor(params) {
+    this.niveau = params.niveau;
+    this.language = params.language;
+  }
 
   calculerNote() {
     this.questions.forEach((question) => {

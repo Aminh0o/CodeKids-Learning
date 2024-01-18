@@ -86,6 +86,7 @@ export default class Admin {
               language: docSnapShot.data().language,
               question: docSnapShot.data().question,
               responses: docSnapShot.data().responses,
+              code: docSnapShot.data().code,
             })
           );
         });
@@ -118,7 +119,6 @@ export default class Admin {
   }
   // params = { question , questionID }
   async modifierQuestion(params) {
-    console.log(params);
     const docRef = doc(db, "Questions", params.questionID);
     //const question = params.question.filter();
     await updateDoc(docRef, params.question)
@@ -216,9 +216,8 @@ export default class Admin {
 
   // params = {id,...user}
   async banUser(params) {
-    console.log(params);
     await updateDoc(doc(db, "Users", params.id), {
-      // HAHA 
+      // HAHA
       banned: !params.banned,
     })
       .then(() => {
@@ -227,20 +226,18 @@ export default class Admin {
       .catch(() => {
         console.log("failled to ban user");
       });
-    console.log(params);
   }
 
   async deleteAvis(id) {
-    await deleteDoc(doc(db,"Avis",id)).then(
-      ()=>{
-        this.avis.filter((avis)=>{
-          console.log(avis.id,id,avis.id!=id);
-          return avis.id != id
-        })
+    await deleteDoc(doc(db, "Avis", id))
+      .then(() => {
+        this.avis.filter((avis) => {
+          return avis.id != id;
+        });
         console.log("deleted");
-      }
-    ).catch(()=>{
-      console.log("failde to delete");
-    })
+      })
+      .catch(() => {
+        console.log("failde to delete");
+      });
   }
 }

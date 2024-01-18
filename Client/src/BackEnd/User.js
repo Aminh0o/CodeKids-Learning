@@ -7,7 +7,6 @@ import {
   getDocs,
   where,
   query,
-  addDoc,
   updateDoc,
 } from "firebase/firestore";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -98,9 +97,10 @@ export default class User {
   // params = {niveau, language}
 
   async commancerQCM(params) {
-    this.currentQCM = new QCM();
-    this.currentQCM.niveau = params.niveau;
-    this.currentQCM.language = params.language;
+    this.currentQCM = new QCM({
+      niveau: params.niveau,
+      language: params.language,
+    });
     await getDocs(
       query(
         collection(db, "Questions"),
@@ -119,14 +119,15 @@ export default class User {
         // TOCHANGE
         documents = documents.slice(0, 5);
         console.log(documents);
-        documents.forEach((documents) => {
+        documents.forEach((doc) => {
           this.currentQCM.questions.push(
             new Question({
-              questionId: documents.id,
+              questionId: doc.id,
               niveau: params.niveau,
               language: params.language,
-              question: documents.data().question,
-              responses: documents.data().responses,
+              question: doc.data().question,
+              responses: doc.data().responses,
+              code: doc.data().code,
             })
           );
         });
