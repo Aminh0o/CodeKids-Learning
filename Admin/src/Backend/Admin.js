@@ -140,7 +140,7 @@ export default class Admin {
       });
   }
 
-  async getAvis() {
+  async getAvis(seen) {
     if (this.isFetchingActive) return;
     this.isFetchingActive = true;
     this.avis = [];
@@ -154,6 +154,7 @@ export default class Admin {
               message: docSnapShot.data().message,
               sujet: docSnapShot.data().sujet,
               id: docSnapShot.id,
+              seen: docSnapShot.data().seen,
             })
           );
         });
@@ -162,7 +163,10 @@ export default class Admin {
         console.log("failled to load avis");
       });
     this.isFetchingActive = false;
-    return this.avis;
+    const filtredAvis = this.avis.filter((avis) => {
+      return seen ? avis.seen : !avis.seen;
+    });
+    return filtredAvis;
   }
 
   // params = {id,...avis}
@@ -202,26 +206,19 @@ export default class Admin {
       .catch(() => {
         console.log("failled to load users");
       });
-    
+
     this.isFetchingActive = false;
-    let unbannedUsers;
-    if (banned) {
-      unbannedUsers = this.users.filter((user) => {
-        return !user.banned ? false : true;
-      });
-    } else {
-      unbannedUsers = this.users.filter((user) => {
-        return user.banned ? false : true;
-      });
-    }
-    console.log(unbannedUsers);
-    return unbannedUsers;
+    const filtredUsers = this.users.filter((user) => {
+      return banned ? user.banned : !user.banned;
+    });
+    return filtredUsers;
   }
 
   // params = {id,...user}
   async banUser(params) {
     console.log(params);
     await updateDoc(doc(db, "Users", params.id), {
+      // HAHA 
       banned: !params.banned,
     })
       .then(() => {
@@ -230,6 +227,20 @@ export default class Admin {
       .catch(() => {
         console.log("failled to ban user");
       });
-      console.log(params);
+    console.log(params);
+  }
+
+  async deleteAvis(id) {
+    await deleteDoc(doc(db,"Avis",id)).then(
+      ()=>{
+        this.avis.filter((avis)=>{
+          console.log(avis.id,id,avis.id!=id);
+          return avis.id != id
+        })
+        console.log("deleted");
+      }
+    ).catch(()=>{
+      console.log("failde to delete");
+    })
   }
 }

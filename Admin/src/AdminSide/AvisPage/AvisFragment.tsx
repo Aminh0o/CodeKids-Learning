@@ -1,10 +1,15 @@
 import Admin from "/src/Backend/Admin.js";
 
-// params = {avis, key}
+// params = {avis, setAvis, key}
 export default function AvisFragment(params) {
-  const handleSeenAvis = async (e) => {
+
+  const handleSeenAvis = async (e: MouseEvent) => {
     e.preventDefault();
     await Admin.getInstance().markAsSeen(params.avis);
+  };
+
+  const handleSupression = async () => {
+    await Admin.getInstance().deleteAvis(params.avis.id);
   };
 
   return (
@@ -17,12 +22,16 @@ export default function AvisFragment(params) {
       <br />
       <span>Message : {params.avis.message}</span>
       <br />
-      <button
-        disabled={params.avis.seen ? true : false}
-        onClick={(e) => handleSeenAvis(e)}
-      >
-        Marker comme lu
-      </button>
+      {!params.avis.seen && (
+        <button
+          disabled={params.avis.seen ? true : false}
+          onClick={(e) => handleSeenAvis(e)}
+        >
+          Marker comme lu
+        </button>
+      )}
+      <button>Banner l'user</button>
+      <button onClick={handleSupression}>suprimer avis</button>
     </div>
   );
 }
