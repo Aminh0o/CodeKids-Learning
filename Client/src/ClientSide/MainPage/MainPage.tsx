@@ -151,9 +151,7 @@ function Teachers() {
   );
 }
 
-function Rules(){
-
-}
+function Rules() {}
 
 function Contact() {
   const { connected, setConnected } = useContext(UserContext);
@@ -172,7 +170,7 @@ function Contact() {
         email: User.getInstance()?.email || "",
       });
     }
-  }, []);
+  }, [connected]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -186,9 +184,9 @@ function Contact() {
 
     Visiteur.laisserAvis(data).finally(() => {
       setData({
-        nom: "",
+        nom: connected ? data.nom : "",
         sujet: "",
-        email: "",
+        email: connected ? data.email : "",
         message: "",
       });
     });
@@ -210,11 +208,11 @@ function Contact() {
                         type="text"
                         disabled={connected}
                         value={data.nom}
-                        onChange={(e) => {
+                        onInput={(e) => {
                           setData({ ...data, nom: e.target.value });
                         }}
                         placeholder="Nom"
-                        className="form-control"
+                        className="Email"
                       />
                     </div>
                     <div className="form-group">
@@ -222,7 +220,7 @@ function Contact() {
                         type="text"
                         placeholder="Subject"
                         value={data.sujet}
-                        onChange={(e) => {
+                        onInput={(e) => {
                           setData({ ...data, sujet: e.target.value });
                         }}
                         className="form-control"
@@ -234,7 +232,7 @@ function Contact() {
                         placeholder="Email"
                         disabled={connected}
                         value={data.email}
-                        onChange={(e) => {
+                        onInput={(e) => {
                           setData({ ...data, email: e.target.value });
                         }}
                       />
@@ -245,7 +243,7 @@ function Contact() {
                         placeholder="Message"
                         value={data.message}
                         className="input_message"
-                        onChange={(e) => {
+                        onInput={(e) => {
                           setData({ ...data, message: e.target.value });
                         }}
                       />

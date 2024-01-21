@@ -1,21 +1,32 @@
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import Admin from "../../Backend/Admin.js";
 // documuntaion about CodeEditor : https://uiwjs.github.io/react-textarea-code-editor/
 import CodeEditor from "@uiw/react-textarea-code-editor";
+
+import LoadingGif from "/src/Imgs/loading.gif";
+import ErrorGif from "/src/Imgs/error.gif";
+import DoneGif from "/src/Imgs/ok.gif";
+
+const NOTYET = -1,
+  LOADING = 0,
+  OK = 1,
+  ERROR = 2;
 
 // params = {setQuestions,questions}
 export default function NewQuestionFragment(params) {
   const [question, setQuestion] = useState({
     language: "C",
     niveau: "facile",
-    question: "int e = 5;",
+    question: "",
     code: "",
     /* responses: [{isCorrect: false,response: "" }],  */
   });
-  const [code, setCode] = useState({
-    code: "",
-    language: "c", // c,js,java,py
+  const [questionState, setQuestionState] = useState({
+    state: NOTYET,
+    message: "",
   });
+  const inputRef = useRef<HTMLInputElement>(null);
+
   // on peut merger responses dans question (plus de travail)
   const [responses, setResponses] = useState([
     { isCorrect: true, response: "" },
@@ -23,10 +34,10 @@ export default function NewQuestionFragment(params) {
     { isCorrect: false, response: "" },
     { isCorrect: false, response: "" },
   ]);
-  // pour assurer que un seul checkbox est coche
+  // pour assurer que un seul checkbox est coche (need useless fix string -> int)
   const [correct, setCorrect] = useState("0");
 
-  const handleCheckBoxChange = (index) => {
+  const handleCheckBoxChange = (index: string) => {
     setCorrect(index);
     setResponses(
       responses.map((response, i) => ({
@@ -36,29 +47,42 @@ export default function NewQuestionFragment(params) {
     );
   };
 
-  const handleResponseChange = (index, value) => {
+  // for dinamic input size
+  const handleInputChange = (e: MouseEvent) => {
+    // update the state + the length
+    setQuestion({ ...question, question: e.target.value });
+    if (inputRef.current) {
+      const length = inputRef.current.value.length;
+      inputRef.current.style.width = length > 19 ? length * 8 + "px" : "150px";
+    }
+  };
+
+  const handleResponseChange = (index: number, newValue: string) => {
     setResponses(
       responses.map((response, i) => ({
         ...response,
-        response: i == index ? value : response.response,
+        response: i == parseInt(index) ? newValue : response.response,
       }))
     );
-    console.log(responses);
   };
 
-  const handleAjouterQuestion = (submitEvent) => {
+  const handleAjouterQuestion = async (submitEvent: MouseEvent) => {
     // must have to not refersh page
     submitEvent.preventDefault();
-    console.log(question);
-    
-    const newQuestion = { ...question, responses };
-    console.log(newQuestion);
+    setQuestionState({
+      state: LOADING,
+      message: "",
+    });
 
-    Admin.getInstance().ajouterQuestion(newQuestion);
-    
+    const newQuestion = { ...question, responses };
+    const res = await Admin.getInstance().ajouterQuestion(newQuestion);
+
+    setQuestionState(res);
+
     const AfterEmptyQuestion = {
       ...question,
       question: "",
+      code: "",
     };
     const AfterEmptyResponses = responses.map(() => {
       return {
@@ -66,21 +90,63 @@ export default function NewQuestionFragment(params) {
         response: "",
       };
     });
-    
+
     // TOFIX : new question not reset to empty after add
+    // put value={state} to fix
     setQuestion(AfterEmptyQuestion);
     setResponses(AfterEmptyResponses);
-    // TOFIX : cant delete new Question (lack of quetionID)
+    // TOFIX : cant delete new Question (lack of quetionID) + ohter issues
     params.setQuestions([...params.questions, newQuestion]);
-    
+
+    setTimeout(() => {
+      setQuestionState({ state: NOTYET, message: "" });
+    }, 4000);
+  };
+
+  const StateGif = () => {
+    return (
+      <>
+        {questionState.state == NOTYET ? (
+          <></>
+        ) : questionState.state == LOADING ? (
+          <>
+            <img className="StateImg" src={LoadingGif} alt="" />
+          </>
+        ) : questionState.state == OK ? (
+          <>
+            <img className="StateImg" src={DoneGif} alt="" />
+            <span>{questionState.message}</span>
+          </>
+        ) : (
+          <>
+            <img className="StateImg" src={ErrorGif} alt="" />
+            <span>{questionState.message}</span>
+          </>
+        )}
+      </>
+    );
   };
 
   // NOT USEFULL FOR NOW (can be used to shorten code)
-  function NewResponse() {
+  // params = {index, correct, handleCheckBoxChange, handleResponseChange}
+  function NewResponse(params) {
     return (
       <>
-        <input type="checkbox" />
-        <input type="text" placeholder="la reponse" />
+        <input
+          type="checkbox"
+          checked={params.correct == params.index}
+          onChange={() => params.handleCheckBoxChange(params.index)}
+        />
+        <input
+          type="text"
+          placeholder={"response" + params.index}
+          onInput={(e) =>
+            params.handleResponseChange(
+              params.index,
+              (e.target as HTMLInputElement).value
+            )
+          }
+        />
         <br />
       </>
     );
@@ -90,14 +156,16 @@ export default function NewQuestionFragment(params) {
     <form>
       <label>la question :</label>
       <input
+        ref={inputRef}
         type="text"
-        onChange={(e) => setQuestion({ ...question, question: e.target.value })}
+        value={question.question}
+        onInput={(e) => handleInputChange(e)}
       />
       <br />
-      <label >le code associé (optionele):</label>
+      <label>le code associé (optionele):</label>
       <CodeEditor
         language={question.language.toLowerCase()}
-        onChange={(evn) => {
+        onInput={(evn) => {
           setQuestion({ ...question, code: evn.target.value });
         }}
         data-color-mode="light"
@@ -119,7 +187,6 @@ export default function NewQuestionFragment(params) {
       <select
         onChange={(e) => {
           setQuestion({ ...question, language: e.target.value });
-        
         }}
       >
         <option value="C">C</option>
@@ -137,7 +204,7 @@ export default function NewQuestionFragment(params) {
         <input
           type="text"
           placeholder="la reponse 0"
-          onChange={(e) => handleResponseChange(0, e.target.value)}
+          onInput={(e) => handleResponseChange(0, e.target.value)}
         />
         <br />
         <input
@@ -148,7 +215,7 @@ export default function NewQuestionFragment(params) {
         <input
           type="text"
           placeholder="la reponse 1"
-          onChange={(e) => handleResponseChange(1, e.target.value)}
+          onInput={(e) => handleResponseChange(1, e.target.value)}
         />
         <br />
         <input
@@ -159,7 +226,7 @@ export default function NewQuestionFragment(params) {
         <input
           type="text"
           placeholder="la reponse 2"
-          onChange={(e) => handleResponseChange(2, e.target.value)}
+          onInput={(e) => handleResponseChange(2, e.target.value)}
         />
         <br />
         <input
@@ -170,10 +237,11 @@ export default function NewQuestionFragment(params) {
         <input
           type="text"
           placeholder="la reponse 3"
-          onChange={(e) => handleResponseChange(3, e.target.value)}
+          onInput={(e) => handleResponseChange(3, e.target.value)}
         />
         <br />
       </div>
+      <StateGif />
       <button
         onClick={(e) => {
           handleAjouterQuestion(e);

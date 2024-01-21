@@ -37,8 +37,8 @@ export default function AvisPage() {
       ) : avis?.length === 0 ? (
         <div>Aucun avis posté</div>
       ) : (
-        avis?.map((avis, index) => {
-          return <AvisFragment key={index} avis={avis} setAvis={setAvis}/>;
+        avis?.map((oneAvis, index) => {
+          return <AvisFragment key={index} avis={avis} oneAvis={oneAvis} index={index} setAvis={setAvis}/>;
         })
       )}
     </>

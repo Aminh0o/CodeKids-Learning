@@ -216,3 +216,8 @@ border-radius: 0px;
  border-radius: 0px; 
 }
 }
+/* Added by Mohammed*/
+.StateImg {
+    width: 30px;
+    height: 30px;
+}

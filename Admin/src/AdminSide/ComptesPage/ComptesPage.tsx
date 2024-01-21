@@ -1,9 +1,24 @@
 import { MouseEvent, useEffect, useState } from "react";
 import Admin from "/src/Backend/Admin";
+
+import LoadingGif from "/src/Imgs/loading.gif";
+import ErrorGif from "/src/Imgs/error.gif";
+import DoneGif from "/src/Imgs/ok.gif";
+
+const NOTYET = -1,
+  LOADING = 0,
+  OK = 1,
+  ERROR = 2;
+
 export default function ComptesPage() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showBan, setShowBan] = useState(false);
+  const [actionState, setActionState] = useState({
+    state: NOTYET,
+    message: "",
+    index: -1,
+  });
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,8 +40,38 @@ export default function ComptesPage() {
     fetchUsers();
   }, [showBan]);
 
+  // params = {user,index}
   const CompteFragment = (params) => {
-    const handleBanUser = async (e: MouseEvent<HTMLButtonElement>) => {
+    const StateGif = () => {
+      return (
+        <>
+          {params.index != actionState.index ? (
+            <></>
+          ) : actionState.state == NOTYET ? (
+            <></>
+          ) : actionState.state == LOADING ? (
+            <>
+              <img className="StateImg" src={LoadingGif} alt="" />
+            </>
+          ) : actionState.state == OK ? (
+            <>
+              <img className="StateImg" src={DoneGif} alt="" />
+              <span>{actionState.message}</span>
+            </>
+          ) : (
+            <>
+              <img className="StateImg" src={ErrorGif} alt="" />
+              <span>{actionState.message}</span>
+            </>
+          )}
+        </>
+      );
+    };
+
+    const handleBanUser = async (
+      e: MouseEvent<HTMLButtonElement>,
+      userIndex: number
+    ) => {
       e.preventDefault();
       const adminDecision = window.confirm(
         "Are you sure you want to " +
@@ -34,9 +79,17 @@ export default function ComptesPage() {
           " this user ?"
       );
       if (!adminDecision) return;
+      setActionState({ state: LOADING, message: "", index: userIndex });
 
-      Admin.getInstance().banUser(params.user);
-      setUsers(users.filter((user) => user.id != params.user.id));
+      const res = await Admin.getInstance().banUser(params.user);
+      setActionState({ ...res, index: userIndex });
+
+      setTimeout(() => {
+        setActionState({ state: NOTYET, message: "", index: -1 });
+        if (res.state == OK) {
+          setUsers(users.filter((user) => user.id != params.user.id));
+        }
+      }, 4000);
     };
 
     return (
@@ -47,7 +100,8 @@ export default function ComptesPage() {
         <br />
         <span>Email de user : {params.user.email}</span>
         <br />
-        <button onClick={(e) => handleBanUser(e)}>
+        <StateGif />
+        <button onClick={(e) => handleBanUser(e, params.index)}>
           {params.user.banned ? "unban the user" : "banner l'user"}
         </button>
       </div>
@@ -69,7 +123,7 @@ export default function ComptesPage() {
         <div>Aucun utilisateur &#x1F622;</div>
       ) : (
         users?.map((user, index) => {
-          return <CompteFragment user={user} key={index} />;
+          return <CompteFragment user={user} key={index} index={index} />;
         })
       )}
     </>

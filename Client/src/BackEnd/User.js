@@ -44,6 +44,9 @@ export default class User {
     await getDoc(docRef).then((docSnapShot) => {
       if (!docSnapShot.exists)
         throw new Error("User isnt connected to AUTH service!");
+      if (docSnapShot.data().banned) {
+        throw new Error("User banned!");
+      }
       User.#instance = new User({
         nom: docSnapShot.data().nom,
         email: docSnapShot.data().email,

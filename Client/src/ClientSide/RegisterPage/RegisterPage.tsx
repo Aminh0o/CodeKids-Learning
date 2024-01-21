@@ -41,18 +41,18 @@ export default function RegisterPage() {
             <input
               type="text"
               placeholder="Nom"
-              onChange={(e) => setData({ ...data, nom: e.target.value })}
+              onInput={(e) => setData({ ...data, nom: e.target.value })}
             />
             <label>Prenom :</label>
             <input
               type="text"
               placeholder="Prenom"
-              onChange={(e) => setData({ ...data, prenom: e.target.value })}
+              onInput={(e) => setData({ ...data, prenom: e.target.value })}
             />
             <label>Date de naissance :</label>
             <input
               type="date"
-              onChange={(e) =>
+              onInput={(e) =>
                 setData({ ...data, dateNaissance: new Date(e.target.value) })
               }
             />
@@ -60,19 +60,19 @@ export default function RegisterPage() {
             <input
               type="email"
               placeholder="Email"
-              onChange={(e) => setData({ ...data, email: e.target.value })}
+              onInput={(e) => setData({ ...data, email: e.target.value })}
             />
             <label>Password :</label>
             <input
               type="password"
               placeholder="Mot de passe"
-              onChange={(e) => setData({ ...data, password: e.target.value })}
+              onInput={(e) => setData({ ...data, password: e.target.value })}
             />
 
             <input
               type="password"
               placeholder="Confirmer votre mot de passe"
-              onChange={(e) =>
+              onInput={(e) =>
                 setData({ ...data, confirmPassword: e.target.value })
               }
             />
