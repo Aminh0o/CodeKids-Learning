@@ -7,11 +7,15 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  where,
 } from "firebase/firestore";
 import Question from "./Question";
 import Avis from "./Avis";
 import User from "./User";
+
+const NOTYET = -1,
+  LOADING = 0,
+  OK = 1,
+  ERROR = 2;
 
 export default class Admin {
   static #instance;
@@ -28,6 +32,7 @@ export default class Admin {
 
   // params = {email, password , rememberMe}
   static async seIdentifier(params) {
+    let res;
     await getDocs(collection(db, "Admin"))
       .then((querySnapShot) => {
         if (querySnapShot.empty) throw new Error("Admin n'existe pas");
@@ -37,14 +42,20 @@ export default class Admin {
             docSnapShot.data().password == params.password
           ) {
             Admin.#instance = new Admin();
-            console.log("login success");
             if (params.rememberMe) localStorage.setItem("connected", "true");
-          } else console.log("login filled");
+            res = { state: OK, message: "Success" };
+          } else {
+            res = {
+              state: ERROR,
+              message: "Your email/password are wrong",
+            };
+          }
         });
       })
       .catch(() => {
-        console.log("login filled");
+        res = { state: ERROR, message: "Login failled . retry later" };
       });
+    return res;
   }
 
   static deConnecter() {
@@ -109,35 +120,47 @@ export default class Admin {
   }
   // params = question {niveau, language, question, responses}
   async ajouterQuestion(params) {
+    let res;
     await addDoc(collection(db, "Questions"), params)
       .then(() => {
-        console.log("Question ajoutéé");
+        res = {
+          state: OK,
+          message: "success",
+        };
       })
       .catch(() => {
-        console.log("Question non ajouté avec echeck!");
+        res = {
+          state: ERROR,
+          message: "Error . failed at adding the question",
+        };
       });
+    return res;
   }
   // params = { question , questionID }
   async modifierQuestion(params) {
+    let res;
     const docRef = doc(db, "Questions", params.questionID);
     //const question = params.question.filter();
     await updateDoc(docRef, params.question)
       .then(() => {
-        console.log("Question modifiée");
+        res = { state: OK, message: "question Modified" };
       })
       .catch(() => {
-        console.log("Question non modifiée avec echeck!");
+        res = { state: ERROR, message: "failed to modify question" };
       });
+    return res;
   }
   // params = {questionId, ...}
   async supprimerQuestion(params) {
+    let res;
     await deleteDoc(doc(db, "Questions", params))
       .then(() => {
-        console.log("Question supprimée");
+        res = { state: OK, message: "question deleted" };
       })
       .catch(() => {
-        console.log("Question non supprimée avec echeck!");
+        res = { state: ERROR, message: "failed to delete question" };
       });
+    return res;
   }
 
   async getAvis(seen) {
@@ -216,28 +239,44 @@ export default class Admin {
 
   // params = {id,...user}
   async banUser(params) {
+    let res;
     await updateDoc(doc(db, "Users", params.id), {
       // HAHA
       banned: !params.banned,
     })
       .then(() => {
-        console.log("User banned");
+        res = {
+          state: OK,
+          message: "User " + (!params.banned ? "banned" : "unbanned"),
+        };
       })
       .catch(() => {
-        console.log("failled to ban user");
+        res = {
+          state: ERROR,
+          message: "Failed to " + (params.banned ? "bann" : "unban") + " user",
+        };
       });
+    return res;
   }
 
   async deleteAvis(id) {
+    let res;
     await deleteDoc(doc(db, "Avis", id))
       .then(() => {
         this.avis.filter((avis) => {
           return avis.id != id;
         });
-        console.log("deleted");
+        res = {
+          state: OK,
+          message: "Avis deleted",
+        };
       })
       .catch(() => {
-        console.log("failde to delete");
+        res = {
+          state: ERROR,
+          message: "Failed to delete avis",
+        };
       });
+    return res;
   }
 }

@@ -23,7 +23,7 @@ export default function ForgottenPasswordPage() {
   return (
     <div>
       <label>Enter your email :</label>
-      <input type="email" onChange={(e) => setEmail(e.target.value)} />
+      <input type="email" onInput={(e) => setEmail(e.target.value)} />
       <button
         onClick={() => {
           handleResetPassword();

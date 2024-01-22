@@ -22,7 +22,7 @@ export default function LoginPage(params) {
   });
   const [error, setError] = useState("");
 
-  const handleLogin = async (e:MouseEvent) => {
+  const handleLogin = async (e: MouseEvent) => {
     e.preventDefault();
 
     await Visiteur.seConnecter(data);
@@ -49,18 +49,18 @@ export default function LoginPage(params) {
             <input
               placeholder="Email"
               type="email"
-              onChange={(e) => setData({ ...data, email: e.target.value })}
+              onInput={(e) => setData({ ...data, email: e.target.value })}
             />
             <label>Password :</label>
             <input
               placeholder="Mot de passe"
               type="password"
-              onChange={(e) => setData({ ...data, password: e.target.value })}
+              onInput={(e) => setData({ ...data, password: e.target.value })}
             />
             <div>
               <input
                 type="checkbox"
-                onChange={(e) =>
+                onInput={(e) =>
                   setData({ ...data, remeberMe: e.target.checked })
                 }
               />

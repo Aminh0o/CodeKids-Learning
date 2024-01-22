@@ -84,7 +84,7 @@ function UserInfo(params) {
           type="text"
           disabled={!params.canModify}
           defaultValue={updatedData.nom}
-          onChange={(e) => {
+          onInput={(e) => {
             setUpdatedData({ ...updatedData, nom: e.target.value });
           }}
         />
@@ -95,7 +95,7 @@ function UserInfo(params) {
           type="text"
           disabled={!params.canModify}
           defaultValue={updatedData.prenom}
-          onChange={(e) =>
+          onInput={(e) =>
             setUpdatedData({ ...updatedData, prenom: e.target.value })
           }
         />
