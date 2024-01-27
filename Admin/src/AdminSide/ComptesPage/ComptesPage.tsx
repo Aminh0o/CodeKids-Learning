@@ -75,8 +75,8 @@ export default function ComptesPage() {
       e.preventDefault();
       const adminDecision = window.confirm(
         "Are you sure you want to " +
-          (params.user.banned ? "unban" : "ban") +
-          " this user ?"
+        (params.user.banned ? "unban" : "ban") +
+        " this user ?"
       );
       if (!adminDecision) return;
       setActionState({ state: LOADING, message: "", index: userIndex });
@@ -93,29 +93,27 @@ export default function ComptesPage() {
     };
 
     return (
-      <div>
-        <span>Nom de user : {params.user.nom}</span>
-        <br />
-        <span>Prenome de user : {params.user.prenom}</span>
-        <br />
-        <span>Email de user : {params.user.email}</span>
-        <br />
-        <StateGif />
-        <button onClick={(e) => handleBanUser(e, params.index)}>
-          {params.user.banned ? "unban the user" : "banner l'user"}
-        </button>
+      <div className="userContainer">
+        <div className="userPage">
+          <span><b>Nom utilisateur : </b> {params.user.nom}</span>
+          <span><b>Prenom utilisateur : </b> {params.user.prenom}</span>
+          <span><b>Email utilisateur : </b> {params.user.email}</span>
+          <StateGif />
+          <button onClick={(e) => handleBanUser(e, params.index)}>
+            {params.user.banned ? "Unban the user" : "Ban the user"}
+          </button>
+        </div>
       </div>
     );
   };
 
   return (
     <>
-      <h1>Comptes deja cree</h1>
       <div>
         <button onClick={() => setShowBan(!showBan)}>
           {!showBan ? "Show Banned Users" : "Show normal users"}
         </button>
-        <h2>{showBan ? "Liste des users banné" : "Liste des users"}</h2>
+        <h2 id="userText">{showBan ? "Liste des users banné" : "Liste des utilisateurs"}</h2>
       </div>
       {isLoading ? (
         <div>Loading...</div>

@@ -30,12 +30,12 @@ export default function AvisPage() {
     <>
 
     <button
-    onClick={()=>setShowSeen(!showSeen)}>{!showSeen? "Show les avis deja lu" : "Show le avis non lu"}</button>
-    <h2>Liste des avis {!showSeen? "non lu":"lu"}</h2>
+    onClick={()=>setShowSeen(!showSeen)}>{!showSeen? "Afficher les avis déja lu" : "Afficher l'avis non lu"}</button>
+    <h2 id="avisText">Liste des avis {!showSeen? "non lu":"lu"}</h2>
       {isLoading ? (
         <div>Loading...</div>
       ) : avis?.length === 0 ? (
-        <div>Aucun avis posté</div>
+        <div id="avisText">Aucun avis posté</div>
       ) : (
         avis?.map((oneAvis, index) => {
           return <AvisFragment key={index} avis={avis} oneAvis={oneAvis} index={index} setAvis={setAvis}/>;

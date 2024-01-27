@@ -70,26 +70,24 @@ export default function AvisFragment(params) {
   };
 
   return (
-    <div>
-      <span>Nom : {params.oneAvis.nom} </span>
-      <br />
-      <span>Email : {params.oneAvis.email}</span>
-      <br />
-      <span>Sujet : {params.oneAvis.sujet}</span>
-      <br />
-      <span>Message : {params.oneAvis.message}</span>
-      <br />
-      {!params.oneAvis.seen && (
-        <button
-          disabled={params.oneAvis.seen ? true : false}
-          onClick={(e) => handleSeenAvis(e)}
-        >
-          Marker comme lu
-        </button>
-      )}
-      <button>Banner l'user (TOADD)</button>
-      <button onClick={handleSupression}>suprimer avis</button>
-      <StateGif />
+    <div class="avisContainer">
+      <div class="avisPage">
+        <span><b>Nom : </b> {params.oneAvis.nom} </span>
+        <span><b>Email : </b> {params.oneAvis.email}</span>
+        <span><b>Sujet : </b> {params.oneAvis.sujet}</span>
+        <span><b>Message : </b> {params.oneAvis.message}</span>
+        {!params.oneAvis.seen && (
+          <button
+            disabled={params.oneAvis.seen ? true : false}
+            onClick={(e) => handleSeenAvis(e)}
+          >
+            Marquer comme lu
+          </button>
+        )}
+        <button>Banner avis </button>
+        <button onClick={handleSupression}>Supprimer avis</button>
+        <StateGif />
+      </div>
     </div>
   );
 }

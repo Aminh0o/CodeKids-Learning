@@ -153,8 +153,8 @@ export default function NewQuestionFragment(params) {
   }
 
   return (
-    <form>
-      <label>la question :</label>
+    <form class="questionForm">
+      <label>La Question :</label>
       <input
         ref={inputRef}
         type="text"
@@ -162,7 +162,7 @@ export default function NewQuestionFragment(params) {
         onInput={(e) => handleInputChange(e)}
       />
       <br />
-      <label>le code associé (optionele):</label>
+      <label>Le code associé (optionnel):</label>
       <CodeEditor
         language={question.language.toLowerCase()}
         onInput={(evn) => {
@@ -183,7 +183,7 @@ export default function NewQuestionFragment(params) {
         <option value="difficile">difficile</option>
       </select>
       <br />
-      <label>la langue :</label>
+      <label>le langage :</label>
       <select
         onChange={(e) => {
           setQuestion({ ...question, language: e.target.value });
@@ -247,7 +247,7 @@ export default function NewQuestionFragment(params) {
           handleAjouterQuestion(e);
         }}
       >
-        Ajouter Question au base de données
+        Ajouter au BDD
       </button>
     </form>
   );

@@ -128,7 +128,7 @@ export default function QuestionPage() {
         );
       };
 
-      return modifiedResponses.map((response, index:number) => {
+      return modifiedResponses.map((response, index: number) => {
         return (
           <OneResponseFragment response={response} index={index} key={index} />
         );
@@ -143,7 +143,7 @@ export default function QuestionPage() {
     const handleSupprimerQuestion = async (modifiedQuestion) => {
       const userDecision = window.confirm(
         "Are you sure you want to delete this question?\n" +
-          modifiedQuestion.question
+        modifiedQuestion.question
       );
       setUpdateState({ state: LOADING, message: "", index: questionIndex });
 
@@ -242,7 +242,7 @@ export default function QuestionPage() {
             }}
           />
           <br />
-          <label> code associé : </label>
+          <label> Le code associé : </label>
           <CodeEditor
             disabled={!canEdit}
             value={modifiedQuestion.code}
@@ -273,7 +273,7 @@ export default function QuestionPage() {
                 handleEngesterement(modifiedQuestion);
               }}
             >
-              Engester la modification
+              Enregistrer la modification
             </button>
           )}
           <button
@@ -317,10 +317,10 @@ export default function QuestionPage() {
 
   return (
     <>
-      <h1>Ajouter nouvel question :</h1>
+      <h1 id="questionText">Ajouter une nouvelle question :</h1>
       <NewQuestionFragment setQuestions={setQuestions} questions={questions} />
-      <h1>Modifier ou supprimer les questions :</h1>
-      <div>
+      <h1 id="questionText">Modifier ou supprimer les questions :</h1>
+      <div class="questionModifForm">
         <form>
           <select
             defaultValue={""}
@@ -345,9 +345,9 @@ export default function QuestionPage() {
             <option value="JavaScript">JavaScript</option>
             <option value="Python">Python</option>
           </select>
-          <button onClick={(e) => handleChercherQuestions(e)}>Chercher</button>
-          <button onClick={(e) => handleResetSearch(e)}>
-            Reset les questions
+          <button onClick={(e) => handleChercherQuestions(e)} id="questionModifButton">Chercher</button>
+          <button onClick={(e) => handleResetSearch(e)} id="questionModifButton">
+            Réinitialiser les questions
           </button>
         </form>
         {isLoading ? (

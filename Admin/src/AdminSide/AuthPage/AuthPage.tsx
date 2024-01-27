@@ -73,16 +73,15 @@ export default function AuthPage() {
   };
 
   return (
-    <div>
-      <h1>Bojour. entrer votre information s'il vous plais</h1>
-      <form
+    <div class="authPage" id="authPage">
+      <form class="authForm"
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <label>email</label>
+        <label>Email</label>
         <input
           onInput={(e) => {
             setInputs({ ...inputs, email: e.target.value });
@@ -91,9 +90,9 @@ export default function AuthPage() {
           type="text"
         />
 
-        <span>{inputs.email.trim() == "" ? "Email cannot be empty" : ""}</span>
+        <span>{inputs.email.trim() == "" ? "Email can not be empty" : ""}</span>
 
-        <label> password</label>
+        <label> Password</label>
         <input
           onInput={(e) => {
             setInputs({ ...inputs, password: e.target.value });
@@ -102,7 +101,7 @@ export default function AuthPage() {
           type="password"
         />
         <span>
-          {inputs.password.trim() == "" ? "Password cannot be empty" : ""}
+          {inputs.password.trim() == "" ? "Password can not be empty" : ""}
         </span>
         <input
           type="checkbox"
@@ -110,9 +109,9 @@ export default function AuthPage() {
             setInputs({ ...inputs, rememberMe: e.target.checked });
           }}
         />
-        <label>Remeber me</label>
+        <label>Remember Me</label>
         <StateGif />
-        <button
+        <button class="AuthPageButton"
           disabled={!canLogin}
           type="submit"
           onClick={(e) => {

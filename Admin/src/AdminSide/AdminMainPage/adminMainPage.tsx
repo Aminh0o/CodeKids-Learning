@@ -2,7 +2,7 @@ import "./adminMainPage.css";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {} from "react-router-dom";
+import { } from "react-router-dom";
 
 import Admin from "../../Backend/Admin.js";
 
@@ -31,7 +31,7 @@ export default function AdminMainPage() {
   const setCurrentPage = () => {
     switch (page) {
       case 0:
-        return <AdminDashBoard />;
+        return <></>;
       case 1:
         return <ComptesPage />;
       case 2:
@@ -61,11 +61,8 @@ export default function AdminMainPage() {
                 CodeKids
               </a>
             </div>
-            <div className="navbar-collapse collapse">
+            <div className="top-middle-container">
               <ul className="nav navbar-nav navbar-right">
-                <li>
-                  <button>See WebSite</button>
-                </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>
                 </li>
@@ -77,15 +74,9 @@ export default function AdminMainPage() {
           <div className="sidebar-collapse">
             <ul className="nav" id="main-menu">
               <li className="text-center user-image-back">
-                <img
-                  src="assets/img/ThomasShelby.jpg"
-                  className="img-responsive"
-                />
-              </li>
-              <li>
-                <a href="#Dash" onClick={() => setPage(0)}>
-                  <i className="fa fa-desktop "></i>Dashboard
-                </a>
+                <div class="user-profile-picture">
+                  <img src="./src/Imgs/find_user.png" alt="Profile Picture" className="img-responsive" />
+                </div>
               </li>
               <li>
                 <a href="#Comptes" onClick={() => setPage(1)}>
@@ -114,48 +105,6 @@ export default function AdminMainPage() {
   );
 }
 
-function AdminDashBoard() {
-  return (
-    <>
-      <div className="col-md-12">
-        <h2>Admin Dashboard</h2>
-      </div>
-      <section className="col-md-12" id="sectionDash">
-        <div className="col-md-5 col-sm-5 col-xs-6">
-          <h5>Espace dans la BDD </h5>
-          <div className="panel panel-primary text-center no-boder bg-color-blue">
-            <div className="panel-body">
-              <i className="fa fa-bar-chart-o fa-5x"></i>
-              <h3>120 GB </h3>
-            </div>
-            <div className="panel-footer back-footer-blue">
-              Disk Space Available
-            </div>
-          </div>
-        </div>
-        <div className="col-md-5 col-sm-5 col-xs-12">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">To-Do List</h5>
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  id="newTask"
-                  className="form-control"
-                  placeholder="nouvelle tache"
-                />
-                <div className="input-group-append">
-                  <button className="btn btn-primary">Ajouter une Tache</button>
-                </div>
-              </div>
-              <ul id="taskList" className="list-group"></ul>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
 function AdminComptes() {
   return (
     <>
