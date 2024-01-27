@@ -285,6 +285,49 @@ a:focus {
 
 /* end client section */
 
+/* Our Rules section */
+/* Add this CSS for the rules section */
+
+.rules_section {
+  background-color: #f7f7f7;
+  padding: 60px 0;
+}
+
+.rules_list {
+  list-style: none;
+  padding: 0;
+}
+
+.rules_list li {
+  background-color:#fff;
+  color:#082465;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.rules_list li:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.rule_number {
+  display: block;
+  background-color:#082465;
+  color:#fec913;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.rule_text {
+  display: block;
+  padding: 20px;
+  font-size: 16px;
+}
+/* end Our Rules section*/
+
 /* contact section */
 .contact_section {
   background-image: url(/src/Imgs/shape-2.png);
@@ -331,20 +374,31 @@ a:focus {
 
 .footer_section {
   background-color: #082465;
-  padding: 20px 0;
+  color: #fec913;
+  font-weight: bold;
+  padding: 40px 0;
   font-family: "Roboto", sans-serif;
 }
 
 .footer_section p {
   color: #fdfdfe;
   margin: 0;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 .footer_section a {
   color: #fdfdfe;
 }
+.footer_bottom {
+  background-color:#082465;
+  color: #fff;
+  padding: 10px 0;
+}
 
+.footer_bottom p {
+  margin: 0;
+}
 /* end footer section*/
 
 /* Added by Moahmmed*/

@@ -69,7 +69,7 @@ export default function LoginPage(params) {
 
             <br />
             <button className="call_to_btn" onClick={(e) => handleLogin(e)}>
-              SignIn
+              Sign In
             </button>
             <br />
           </form>

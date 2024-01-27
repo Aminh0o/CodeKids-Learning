@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
 import User from "/src/BackEnd/User";
 import { UserContext } from "/src/App";
 import { Link } from "react-router-dom";
@@ -78,12 +79,12 @@ export default function Header() {
                   </li>
                   <li className="nav-item ">
                     <Link className="nav-link" to="/TODO">
-                      Features
+                      About Us
                     </Link>
                   </li>
                   <li className="nav-item ">
                     <Link className="nav-link" to="/TODO">
-                      About
+                      Teachers
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -93,7 +94,7 @@ export default function Header() {
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/TODO">
-                      Contact Us
+                      Contact
                     </Link>
                   </li>
                   <li className="nav-item">
