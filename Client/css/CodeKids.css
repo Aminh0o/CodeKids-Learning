@@ -65,7 +65,7 @@ body {
   background-color: white;
 }
 
-.call_to-btn:hover+.top_container::before {
+.call_to-btn:hover + .top_container::before {
   background: url(/src/Imgs/hero-bg-orange.png);
 }
 
@@ -299,8 +299,8 @@ a:focus {
 }
 
 .rules_list li {
-  background-color:#fff;
-  color:#082465;
+  background-color: #fff;
+  color: #082465;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -314,8 +314,8 @@ a:focus {
 
 .rule_number {
   display: block;
-  background-color:#082465;
-  color:#fec913;
+  background-color: #082465;
+  color: #fec913;
   padding: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -391,7 +391,7 @@ a:focus {
   color: #fdfdfe;
 }
 .footer_bottom {
-  background-color:#082465;
+  background-color: #082465;
   color: #fff;
   padding: 10px 0;
 }
@@ -409,6 +409,19 @@ a:focus {
   justify-content: center;
 }
 
-.ProfilePage>* {
+.ProfilePage > * {
   margin: 10px;
+}
+
+.MainContent {
+  padding: 0;
+  margin: 0;
+  min-height: calc(100vh - 130px - 304px);
+}
+
+.Connecting {
+  display: flex;
+  justify-content: center;
+  background-color: seagreen;
+  color: white;
 }

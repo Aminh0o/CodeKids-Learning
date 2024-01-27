@@ -17,13 +17,13 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
 
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
-    Visiteur.creeCompte(data);
-    if (User.isUserConnected()) {
+    const response = await Visiteur.creeCompte(data);
+    if (response.status) {
       navigate("/");
     } else {
-      setError("Erreurs dans votre informations");
+      setError(response.error);
     }
   };
 

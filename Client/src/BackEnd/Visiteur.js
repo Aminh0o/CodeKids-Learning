@@ -18,17 +18,24 @@ export default class Visiteur {
       });
     await User.createInstance(auth.currentUser.uid);
     if (User.getInstance())
-    if (params.remeberMe) localStorage.setItem("user", auth.currentUser.uid);
+      if (params.remeberMe) localStorage.setItem("user", auth.currentUser.uid);
   }
 
   // params : {nom, prenom, dateNaissance, email, languagePrefere};
   static async creeCompte(params) {
+    let res = null;
     // cree compte dans auth
-    await createUserWithEmailAndPassword(auth, params.email, params.password);
+    await createUserWithEmailAndPassword(
+      auth,
+      params.email,
+      params.password
+    ).catch((error) => {
+      res = { status: false, error: error.message };
+    });
+    if (res) return res;
     // insirrer les valeurs dans firestore
     const newUser = doc(db, "Users", auth.currentUser.uid);
     await setDoc(newUser, {
-      //username: params.username,
       nom: params.nom,
       prenom: params.prenom,
       dateNaissance: params.dateNaissance,
@@ -36,12 +43,13 @@ export default class Visiteur {
       languagePrefere: params.languagePrefere,
     })
       .then(() => {
-        console.log("SingUp success");
+        res = { status: true };
       })
-      .catch(() => {
-        console.log("SingUp failled");
+      .catch((error) => {
+        res = { status: false, error: error.message };
       });
     await User.createInstance(auth.currentUser.uid);
+    return res;
   }
 
   static async laisserAvis(avis) {

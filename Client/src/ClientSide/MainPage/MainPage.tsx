@@ -151,21 +151,39 @@ function Teachers() {
 }
 
 function Rules() {
+  const rules = [
+    {
+      number: "1",
+      text: "Respect: Treat fellow learners, teachers, and staff with kindness and respect.",
+    },
+    {
+      number: "2",
+      text: "Collaboration: Embrace teamwork and collaborative learning with your peers.",
+    },
+    {
+      number: "3",
+      text: "Curiosity: Stay curious and ask questions to enhance your understanding of programming concepts.",
+    },
+    {
+      number: "4",
+      text: "Creativity: Express your creativity through coding projects and problem-solving exercises.",
+    },
+    {
+      number: "5",
+      text: "Safety First: Follow online safety guidelines and report any concerns to our support team.",
+    },
+  ];
   return (
     <section id="rules" className="rules_section layout_padding">
       <div className="container">
         <h2 className="main-heading">Our Rules</h2>
         <p className="text-center">
-          At CodeKids, we believe in creating a positive and enriching learning experience. To ensure a safe and enjoyable environment for all our young learners, we have established the following rules:
+          At CodeKids, we believe in creating a positive and enriching learning
+          experience. To ensure a safe and enjoyable environment for all our
+          young learners, we have established the following rules:
         </p>
         <ul className="rules_list">
-          {[
-            { number: '1', text: 'Respect: Treat fellow learners, teachers, and staff with kindness and respect.' },
-            { number: '2', text: 'Collaboration: Embrace teamwork and collaborative learning with your peers.' },
-            { number: '3', text: 'Curiosity: Stay curious and ask questions to enhance your understanding of programming concepts.' },
-            { number: '4', text: 'Creativity: Express your creativity through coding projects and problem-solving exercises.' },
-            { number: '5', text: 'Safety First: Follow online safety guidelines and report any concerns to our support team.' },
-          ].map((rule, index) => (
+          {rules.map((rule, index) => (
             <li key={index}>
               <span className="rule_number">{rule.number}</span>
               <span className="rule_text">{rule.text}</span>
@@ -175,7 +193,6 @@ function Rules() {
         <div className="d-flex justify-content-center mt-3">
           <a href="#" className="call_to-btn">
             <span>Learn More</span>
-            <img src="images/right-arrow.png" alt="" /> {/* Make sure FontAwesome is used if necessary */}
           </a>
         </div>
       </div>
@@ -184,7 +201,7 @@ function Rules() {
 }
 
 function Contact() {
-  const { connected, setConnected } = useContext(UserContext);
+  const { connected } = useContext(UserContext);
   const [data, setData] = useState({
     nom: "",
     sujet: "",
@@ -226,15 +243,18 @@ function Contact() {
     <section id="contact" className="contact_section layout_padding-bottom">
       <div className="container">
         <h2 className="main-heading">Contact Now</h2>
-        <p className="text-center"><p className="text-center">
-          If you have any inquiries, suggestions, or simply want to get in touch with us,
-          we'd love to hear from you! Our team at CodeKids is dedicated to providing a supportive
-          and engaging learning environment for children. Feel free to reach out by filling in the
-          form below with your name, subject, email, and message. We are excited to connect with
-          parents, teachers, and kids who share our passion for programming education.
-          Let's embark on this coding adventure together!
-        </p>
-        </p>
+        <div className="text-center">
+          <p className="text-center">
+            If you have any inquiries, suggestions, or simply want to get in
+            touch with us, we'd love to hear from you! Our team at CodeKids is
+            dedicated to providing a supportive and engaging learning
+            environment for children. Feel free to reach out by filling in the
+            form below with your name, subject, email, and message. We are
+            excited to connect with parents, teachers, and kids who share our
+            passion for programming education. Let's embark on this coding
+            adventure together!
+          </p>
+        </div>
         <div className="">
           <div className="contact_section-container">
             <div className="row">
@@ -306,4 +326,3 @@ function Contact() {
     </section>
   );
 }
-
