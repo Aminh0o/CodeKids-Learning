@@ -1,3 +1,4 @@
+import "./ForgotPassPage.css";
 import { useState } from "react";
 import User from "/src/BackEnd/User";
 import { isSignInWithEmailLink } from "firebase/auth";

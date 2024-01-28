@@ -21,6 +21,8 @@ export default function App() {
       if (user && User.getInstance() == null) {
         await User.createInstance(user);
         setConnected(true);
+        console.log(User.getInstance());
+        
       }
       setConnecting(false);
     };
@@ -29,17 +31,15 @@ export default function App() {
   return (
     <UserContext.Provider value={{ connected, setConnected }}>
       <Router>
-        {connecting && <div className="Connecting">Connecting ...</div>}
+        {connecting && <div>Connecting ...</div>}
         <Header />
-        <div className="MainContent">
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/Register" element={<RegisterPage />} />
-            <Route path="/Login" element={<LoginPage lastPage="/" />} />
-            <Route path="/QCM" element={<QCMPage />} />
-            <Route path="/Profile" element={<ProfilePage />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/Register" element={<RegisterPage />} />
+          <Route path="/Login" element={<LoginPage lastPage="/" />} />
+          <Route path="/QCM" element={<QCMPage />} />
+          <Route path="/Profile" element={<ProfilePage />} />
+        </Routes>
       </Router>
       <Footer />
     </UserContext.Provider>

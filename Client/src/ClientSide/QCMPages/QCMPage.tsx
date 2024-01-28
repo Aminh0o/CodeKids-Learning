@@ -46,11 +46,10 @@ export default function QCMPage() {
   return (
     <QCMContext.Provider value={{ newQCM, setNewQCM, nextStep }}>
       <div className="top-continer">
-        <Link onClick={() => handleAnnuler()} to="/">
-          Annuler le QCM
-        </Link>
-
         <CurrentPage />
+        <Link onClick={() => handleAnnuler()} to="/">
+          <button className="call_to-btn_qcm">Cancel the MCQ</button>
+        </Link>
       </div>
     </QCMContext.Provider>
   );

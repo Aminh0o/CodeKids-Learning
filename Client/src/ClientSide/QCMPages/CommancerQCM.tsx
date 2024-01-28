@@ -43,18 +43,18 @@ export default function CommancerQCM() {
   return (
     <div className="qcm-one-container">
       <form>
-        <label>Slectioner votre niveau</label>
+        <label>Select your level</label>
         <select
           value={newQCM.niveau}
           onChange={(e) => {
             setNewQCM({ ...newQCM, niveau: e.target.value });
           }}
         >
-          <option value="facile">Facile</option>
-          <option value="moyen">Moyen</option>
-          <option value="difficile">Difficile</option>
+          <option value="facile">Easy</option>
+          <option value="moyen">Medium</option>
+          <option value="difficile">Hard</option>
         </select>
-        <label>Slectioner votre langage</label>
+        <label>Select your language</label>
         <select
           value={newQCM.language}
           disabled={isSelected.isIt}
@@ -68,18 +68,18 @@ export default function CommancerQCM() {
           <option value="Java">Java</option>
           <option value="Python">Python</option>
         </select>
-        <label>ou</label>
+        <label>or</label>
         <button
           onClick={(e) => handleLanguagePrefere(e)}
           className="call_to_btn"
         >
-          Choisir mon language preferé
+          Choose my preferred language
         </button>
         <label style={{ marginTop: "20px" }}>
-          Clicker ici pour generer votre QCM :
+        Click here to generate your MCQ :
         </label>
         <button className="call_to_btn" onClick={(e) => handleGenerationQCM(e)}>
-          Generer le QCM
+        Generate the MCQ
         </button>
       </form>
     </div>

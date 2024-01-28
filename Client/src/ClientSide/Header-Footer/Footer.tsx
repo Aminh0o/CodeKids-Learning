@@ -14,23 +14,23 @@ export default function Footer() {
             <ul>
               <li><a href="#home">Home</a></li>
               <li><a href="#about">About Us</a></li>
-              <li><a href="#rules">Our Rules</a></li>
               <li><a href="#teachers">Our Teachers</a></li>
+              <li><a href="#rules">Our Rules</a></li>
               <li><a href="#contact">Contact Us</a></li>
             </ul>
           </div>
           <div className="col-md-4">
             <h3>Connect With Us</h3>
             <div className="social_icons">
-              <a href="#" className="icon"><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="icon"><i className="fab fa-twitter"></i></a>
-              <a href="#" className="icon"><i className="fab fa-instagram"></i></a>
+              <a href="#" className="icon"><i className="fa fa-facebook-f"></i></a>
+              <a href="#" className="icon"><i className="fa fa-youtube"></i></a>
+              <a href="#" className="icon"><i className="fa fa-instagram"></i></a>
             </div>
           </div>
         </div>
       </div>
       <div className="footer_bottom text-center">
-        <p>&copy; 2024 CodeKids Learning. All rights reserved.</p>
+        <p>&copy; 2024 CodeKids-Learning. </p><br/><p>All rights reserved.</p>
       </div>
     </footer>
   );

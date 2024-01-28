@@ -57,16 +57,17 @@ export default function LoginPage(params) {
               type="password"
               onInput={(e) => setData({ ...data, password: e.target.value })}
             />
-            <div>
+            <div className="remember-me-container">
               <input
                 type="checkbox"
-                onInput={(e) =>
-                  setData({ ...data, remeberMe: e.target.checked })
-                }
+                id="rememberMe"
+                className="remember-me-checkbox"
+                onInput={(e) => setData({ ...data, remeberMe: e.target.checked })}
               />
-              <label>Remeber me</label>
+              <label htmlFor="rememberMe" className="remember-me-label">
+                Remember me
+              </label>
             </div>
-
             <br />
             <button className="call_to_btn" onClick={(e) => handleLogin(e)}>
               Sign In

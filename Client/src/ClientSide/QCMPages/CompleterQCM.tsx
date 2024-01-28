@@ -51,8 +51,8 @@ export default function CompleterQCM() {
 
     return (
       <div className="question">
-        <h2>La question : {params.index + 1}</h2>
-        <span>{params.question.question}</span>
+        <h2>Question {params.index + 1} : </h2>
+        <span className="qst">{params.question.question}</span>
         {params.question.code ? (
           <Code language="javascript">{params.question.code}</Code>
         ) : (
@@ -70,7 +70,7 @@ export default function CompleterQCM() {
 
   return (
     <div className="center-container">
-      <div className="qcm-two-container">
+      <div className="qcm-two-container-start">
         {questions.map((question, index) => (
           <QuestionFragment question={question} key={index} index={index} />
         ))}
