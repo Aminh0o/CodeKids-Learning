@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Element } from "react-scroll";
 import User from "/src/BackEnd/User";
 import { UserContext } from "/src/App";
 import Visiteur from "/src/BackEnd/Visiteur";
@@ -7,13 +8,24 @@ import Visiteur from "/src/BackEnd/Visiteur";
 export default function MainPage() {
   return (
     <div>
-      <Hello />
-      <About />
-      <Teachers />
-      <Rules />
-      <Contact />
+      <Element name="home">
+        <Hello />
+      </Element>
+      <Element name="about">
+        <About />
+      </Element>
+      <Element name="teachers">
+        <Teachers />
+      </Element>
+      <Element name="rules">
+        <Rules />
+      </Element>
+      <Element name="contact">
+        <Contact />
+      </Element>
     </div>
   );
+
 }
 function Hello() {
   const { connected, setConnected } = useContext(UserContext);
@@ -22,10 +34,11 @@ function Hello() {
       <div className="hero-container container">
         <div className="hero_detail-box">
           <h3>
-            Bienvenue sur <br />
+            Welcome to <br />
             CodeKids-Learning
           </h3>
-          <h1>Apprendre la Programmation en s'Amusant !</h1>
+          <h1>Learn Programming while Having Fun !</h1>
+
           <div className="hero_btn-continer">
             <Link
               to={connected ? "/QCM" : "/Login"}
@@ -62,11 +75,6 @@ function About() {
           </p>
           <div className="about_img-box ">
             <img src="\src\Imgs\kids.jpg" alt="" className="img-fluid w-100" />
-          </div>
-          <div className="d-flex justify-content-center mt-5">
-            <a href="" className="call_to-btn  ">
-              <span>Read More</span>
-            </a>
           </div>
         </div>
       </section>
@@ -138,12 +146,6 @@ function Teachers() {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-center mt-3">
-            <a href="" className="call_to-btn">
-              <span>See More</span>
-              <img src="images/right-arrow.png" alt="" />
-            </a>
-          </div>
         </div>
       </section>
     </>
@@ -151,57 +153,34 @@ function Teachers() {
 }
 
 function Rules() {
-  const rules = [
-    {
-      number: "1",
-      text: "Respect: Treat fellow learners, teachers, and staff with kindness and respect.",
-    },
-    {
-      number: "2",
-      text: "Collaboration: Embrace teamwork and collaborative learning with your peers.",
-    },
-    {
-      number: "3",
-      text: "Curiosity: Stay curious and ask questions to enhance your understanding of programming concepts.",
-    },
-    {
-      number: "4",
-      text: "Creativity: Express your creativity through coding projects and problem-solving exercises.",
-    },
-    {
-      number: "5",
-      text: "Safety First: Follow online safety guidelines and report any concerns to our support team.",
-    },
-  ];
   return (
     <section id="rules" className="rules_section layout_padding">
       <div className="container">
         <h2 className="main-heading">Our Rules</h2>
         <p className="text-center">
-          At CodeKids, we believe in creating a positive and enriching learning
-          experience. To ensure a safe and enjoyable environment for all our
-          young learners, we have established the following rules:
+          At CodeKids, we believe in creating a positive and enriching learning experience. To ensure a safe and enjoyable environment for all our young learners, we have established the following rules:
         </p>
         <ul className="rules_list">
-          {rules.map((rule, index) => (
+          {[
+            { number: '1. Respect ', text: ' Treat fellow learners, teachers, and staff with kindness and respect.' },
+            { number: '2. Collaboration ', text: ' Embrace teamwork and collaborative learning with your peers.' },
+            { number: '3. Curiosity ', text: ' Stay curious and ask questions to enhance your understanding of programming concepts.' },
+            { number: '4. Creativity ', text: ' Express your creativity through coding projects and problem-solving exercises.' },
+            { number: '5. Safety First', text: ' Follow online safety guidelines and report any concerns to our support team.' },
+          ].map((rule, index) => (
             <li key={index}>
               <span className="rule_number">{rule.number}</span>
               <span className="rule_text">{rule.text}</span>
             </li>
           ))}
         </ul>
-        <div className="d-flex justify-content-center mt-3">
-          <a href="#" className="call_to-btn">
-            <span>Learn More</span>
-          </a>
-        </div>
       </div>
     </section>
   );
 }
 
 function Contact() {
-  const { connected } = useContext(UserContext);
+  const { connected, setConnected } = useContext(UserContext);
   const [data, setData] = useState({
     nom: "",
     sujet: "",
@@ -243,18 +222,15 @@ function Contact() {
     <section id="contact" className="contact_section layout_padding-bottom">
       <div className="container">
         <h2 className="main-heading">Contact Now</h2>
-        <div className="text-center">
-          <p className="text-center">
-            If you have any inquiries, suggestions, or simply want to get in
-            touch with us, we'd love to hear from you! Our team at CodeKids is
-            dedicated to providing a supportive and engaging learning
-            environment for children. Feel free to reach out by filling in the
-            form below with your name, subject, email, and message. We are
-            excited to connect with parents, teachers, and kids who share our
-            passion for programming education. Let's embark on this coding
-            adventure together!
-          </p>
-        </div>
+        <p className="text-center"><p className="text-center">
+          If you have any inquiries, suggestions, or simply want to get in touch with us,
+          we'd love to hear from you! Our team at CodeKids is dedicated to providing a supportive
+          and engaging learning environment for children. Feel free to reach out by filling in the
+          form below with your name, subject, email, and message. We are excited to connect with
+          parents, teachers, and kids who share our passion for programming education.
+          Let's embark on this coding adventure together!
+        </p>
+        </p>
         <div className="">
           <div className="contact_section-container">
             <div className="row">
@@ -308,6 +284,7 @@ function Contact() {
                     </div>
                     <div className="d-flex justify-content-center">
                       <button
+                      id="sendContact"
                         className="call_to-btn"
                         onClick={(e) => {
                           handleSubmit(e);
@@ -326,3 +303,4 @@ function Contact() {
     </section>
   );
 }
+

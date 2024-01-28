@@ -45,7 +45,7 @@ export default function Header() {
                 className="img-fluid"
                 style={{ width: "100%", maxWidth: "100px", maxHeight: "100px" }}
               />
-              <span>CodeKids:Learning</span>
+              <span>CodeKids-Learning</span>
             </Link>
             <button
               className={
@@ -71,31 +71,21 @@ export default function Header() {
               id="navbarSupportedContent"
             >
               <div className="d-flex ml-auto flex-column flex-lg-row align-items-center">
-                <ul className="navbar-nav  ">
-                  <li className="nav-item active">
-                    <Link className="nav-link" to="/">
-                      Home
-                    </Link>
-                  </li>
-                  <li className="nav-item ">
-                    <Link className="nav-link" to="/TODO">
-                      About Us
-                    </Link>
-                  </li>
-                  <li className="nav-item ">
-                    <Link className="nav-link" to="/TODO">
-                      Teachers
-                    </Link>
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <ScrollLink className="nav-link" to="home" smooth={true} duration={500}>Home</ScrollLink>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/TODO">
-                      Rules
-                    </Link>
+                    <ScrollLink className="nav-link" to="about" smooth={true} duration={500}>About Us</ScrollLink>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/TODO">
-                      Contact
-                    </Link>
+                    <ScrollLink className="nav-link" to="teachers" smooth={true} duration={500}>Teachers</ScrollLink>
+                  </li>
+                  <li className="nav-item">
+                    <ScrollLink className="nav-link" to="rules" smooth={true} duration={500}>Rules</ScrollLink>
+                  </li>
+                  <li className="nav-item">
+                    <ScrollLink className="nav-link" to="contact" smooth={true} duration={500}>Contact</ScrollLink>
                   </li>
                   <li className="nav-item">
                     <ShowCompteStatus />
@@ -104,8 +94,8 @@ export default function Header() {
               </div>
             </div>
           </nav>
-        </div>
-      </header>
+        </div >
+      </header >
     </>
   );
 }

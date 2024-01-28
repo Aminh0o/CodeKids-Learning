@@ -17,39 +17,36 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
 
-  const register = async (e) => {
+  const register = (e) => {
     e.preventDefault();
-    const response = await Visiteur.creeCompte(data);
-    if (response.status) {
+    Visiteur.creeCompte(data);
+    if (User.isUserConnected()) {
       navigate("/");
     } else {
-      setError(response.error);
+      setError("Erreurs dans votre informations");
     }
   };
 
   return (
-    <div className="top_container">
-      <div className="hero_img-container">
-        <img src="/src/Imgs/hero.png" alt="" className="img-fluid" />
-      </div>
+    <div className="top_container_sign">
       <div className="signup-form-container">
         <div className="signUp_form">
           <h2>SIGN UP</h2>
           <form>
             <span className="error-span">{error}</span>
-            <label>Nom :</label>
+            <label>Family Name :</label>
             <input
               type="text"
-              placeholder="Nom"
+              placeholder="Family Name"
               onInput={(e) => setData({ ...data, nom: e.target.value })}
             />
-            <label>Prenom :</label>
+            <label>First Name :</label>
             <input
               type="text"
-              placeholder="Prenom"
+              placeholder="First Name"
               onInput={(e) => setData({ ...data, prenom: e.target.value })}
             />
-            <label>Date de naissance :</label>
+            <label>Birth Date :</label>
             <input
               type="date"
               onInput={(e) =>
@@ -65,18 +62,18 @@ export default function RegisterPage() {
             <label>Password :</label>
             <input
               type="password"
-              placeholder="Mot de passe"
+              placeholder="password"
               onInput={(e) => setData({ ...data, password: e.target.value })}
             />
 
             <input
               type="password"
-              placeholder="Confirmer votre mot de passe"
+              placeholder="Confirm your password"
               onInput={(e) =>
                 setData({ ...data, confirmPassword: e.target.value })
               }
             />
-            <label>Prefered programing luaguage :</label>
+            <label>Prefered programming langage :</label>
             <select
               onChange={(e) =>
                 setData({ ...data, languagePrefere: e.target.value })
@@ -94,7 +91,7 @@ export default function RegisterPage() {
               type="submit"
               onClick={(e) => register(e)}
             >
-              SignIn
+              Sign In
             </button>
             <br />
           </form>

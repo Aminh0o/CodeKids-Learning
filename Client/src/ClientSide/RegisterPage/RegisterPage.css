@@ -1,10 +1,11 @@
-.top_container {
+.top_container_sign {
   position: relative;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin-top: -9%;
+  margin-bottom: 50px;
 }
 
 .top_background::before {
@@ -22,7 +23,8 @@
 
 .signup-form-container {
   background: antiquewhite;
-  width: 500px;
+  margin-top: 10%;
+  width: 800px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -30,9 +32,13 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.top_container h2 {
+h2 {
   color: #082465;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow:
+    -1px 0 black,
+    0 1px black,
+    1px 0 black,
+    0 -1px black;
 }
 
 form {
@@ -45,8 +51,10 @@ label {
   color: #082465;
 }
 
-input,
+.signup-form-container input,
 select {
+  align-self: center; 
+  width: 70%;
   padding: 10px;
   margin-bottom: 20px;
   border-radius: 10px;
@@ -77,7 +85,9 @@ select {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
 }
 
 .call_to_btn:hover {

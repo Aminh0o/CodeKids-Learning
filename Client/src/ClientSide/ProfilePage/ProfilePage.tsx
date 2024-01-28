@@ -41,11 +41,11 @@ export default function ProfilePage() {
       {User.isUserConnected() && (
         <UserInfo canModify={canModify} setCanModify={setCanModify} />
       )}
-      <button onClick={() => setCanModify(!canModify)} className="call_to-btn">
-        Modifier le Profile
+      <button onClick={() => setCanModify(!canModify)} className="call_to-btn_prof">
+        Modify your profile
       </button>
       <button
-        className="call_to-btn"
+        className="call_to-btn_prof"
         onClick={() => {
           handleCheckQCMHistory();
         }}
@@ -54,7 +54,7 @@ export default function ProfilePage() {
       </button>
       {canCheckQCM && <QCMsFragment QCMs={QCMs} />}
 
-      <button className="call_to-btn" onClick={() => handleLogout()}>
+      <button className="call_to-btn_prof" onClick={() => handleLogout()}>
         Logout
       </button>
     </div>
@@ -77,9 +77,9 @@ function UserInfo(params) {
   };
 
   return (
-    <div className="login-form-container">
+    <div className="profile-form-container">
       <div>
-        <label>Nom : </label>
+        <label>First Name : </label>
         <input
           type="text"
           disabled={!params.canModify}
@@ -90,7 +90,7 @@ function UserInfo(params) {
         />
       </div>
       <div>
-        <label>Prenom : </label>
+        <label>Family Name : </label>
         <input
           type="text"
           disabled={!params.canModify}
@@ -101,7 +101,7 @@ function UserInfo(params) {
         />
       </div>
       <div>
-        <label>Language preferé : </label>
+        <label>Preferred language : </label>
         <select
           defaultValue={updatedData.languagePrefere}
           disabled={!params.canModify}
@@ -117,12 +117,12 @@ function UserInfo(params) {
       </div>
       {params.canModify && (
         <button
-          className="call_to-btn"
+          className="call_to-btn_prof"
           onClick={(e) => {
             handleUpdateData();
           }}
         >
-          update the informations
+          Update the informations
         </button>
       )}
     </div>
@@ -136,25 +136,27 @@ function QCMsFragment(params) {
     return (
       <div className="OneQCM">
         <span>
-          Le QCM {params.index} <br />
-          passé en {params.QCM.date.toDate().toDateString()}
+          The MCQ: {params.index} <br />
+          Taken on: {params.QCM.date.toDate().toDateString()}
         </span>
-        <span>Le language de programation : {params.QCM.language}</span>
         <br />
-        <span>Le niveau de QCM : {params.QCM.niveau}</span>
+        <span>Programming language: {params.QCM.language}</span>
         <br />
-        <span>La note recu : {params.QCM.note}</span>
+        <span>MCQ Level: {params.QCM.niveau}</span>
+        <br />
+        <span>Your received grade: {params.QCM.note}</span>
         <br />
         <br />
       </div>
+
     );
   };
 
   if (params.QCMs?.length == 0) {
     return (
       <div>
-        Aucun QCM est passé{" "}
-        <Link to="/QCM">Clicker ic pour passer votre premier QCM</Link>
+        No MCQ's passed{" "}
+        <Link to="/QCM">Click here to make your first MCQ</Link>
       </div>
     );
   }
@@ -162,7 +164,7 @@ function QCMsFragment(params) {
   return (
     <div className="OldQCM">
       <div className="moyen">
-        Votre moyen dans les QCMs est : {User.getInstance().calculerMoyen().toFixed(1)}
+      Your average score in the MCQ's is {User.getInstance().calculerMoyen().toFixed(1)}
       </div>
       {params.QCMs?.map((QCM, index) => {
         return <QCMFragment QCM={QCM} key={index} index={index} />;

@@ -4,6 +4,17 @@ body {
   background-image: url(/src/Imgs/body-bg.jpg);
 }
 
+::-webkit-scrollbar 
+{
+  width: 8px;
+  background-color:#082465 ;
+}
+::-webkit-scrollbar-thumb 
+{
+  background-color:#fec913 ;
+  border-radius: 10px;
+}
+
 #root {
   padding: 0px;
 }
@@ -40,6 +51,10 @@ body {
   border: 1px solid transparent;
   transition: all 0.3s ease 0s;
 }
+#sendContact{
+  padding: 10px;
+  width: 30%;
+}
 
 .hero_section .call_to-btn {
   padding: 12px 35px;
@@ -65,7 +80,7 @@ body {
   background-color: white;
 }
 
-.call_to-btn:hover + .top_container::before {
+.call_to-btn:hover+.top_container::before {
   background: url(/src/Imgs/hero-bg-orange.png);
 }
 
@@ -224,12 +239,26 @@ a:focus {
 /* end hero section */
 
 /* about section */
+.main-heading {
+  background-color: #fec913;
+  color:#082465;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 20px 0;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(3, 3, 3, 0.1);
+}
+.text-center{
+  margin-bottom: 20px;
+}
+
 .about_img-box {
   width: 65%;
   margin: 40px auto;
 }
 
-/* about section */
+/* end about section */
 
 /* teacher container */
 .teacher_section .card {
@@ -286,21 +315,19 @@ a:focus {
 /* end client section */
 
 /* Our Rules section */
-/* Add this CSS for the rules section */
-
 .rules_section {
   background-color: #f7f7f7;
-  padding: 60px 0;
+  padding: 0;
 }
 
 .rules_list {
   list-style: none;
-  padding: 0;
+  padding: 10px;
 }
 
 .rules_list li {
-  background-color: #fff;
-  color: #082465;
+  background-color:#fff;
+  color:#082465;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -314,8 +341,8 @@ a:focus {
 
 .rule_number {
   display: block;
-  background-color: #082465;
-  color: #fec913;
+  background-color:#082465;
+  color:#fec913;
   padding: 10px;
   font-size: 18px;
   font-weight: bold;
@@ -347,7 +374,7 @@ a:focus {
   background-color: #dedee0;
   width: 100%;
   margin: 10px 0;
-  padding: 7px 10px;
+  padding: 10px 10px;
 }
 
 .contact-form .input_message {
@@ -391,7 +418,7 @@ a:focus {
   color: #fdfdfe;
 }
 .footer_bottom {
-  background-color: #082465;
+  background-color:#082465;
   color: #fff;
   padding: 10px 0;
 }
@@ -399,6 +426,26 @@ a:focus {
 .footer_bottom p {
   margin: 0;
 }
+
+.social_icons {
+  display: flex;
+}
+
+.icon {
+  margin: 0 10px; 
+  margin-left: 6%;
+  color:#082465; 
+  border: solid 2px #fec913;
+  padding: 10px; 
+  text-decoration: none; 
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.icon:hover {
+  background-color:#fec913; 
+  border: solid 2px #082465;
+}
+
 /* end footer section*/
 
 /* Added by Moahmmed*/
@@ -409,19 +456,6 @@ a:focus {
   justify-content: center;
 }
 
-.ProfilePage > * {
+.ProfilePage>* {
   margin: 10px;
-}
-
-.MainContent {
-  padding: 0;
-  margin: 0;
-  min-height: calc(100vh - 130px - 304px);
-}
-
-.Connecting {
-  display: flex;
-  justify-content: center;
-  background-color: seagreen;
-  color: white;
 }

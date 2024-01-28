@@ -1,37 +1,115 @@
-.oldQCMs{
+.ProfilePage {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  margin-top: -3%;
+}
+.ProfilePage h1{
+  font-weight: bold;
+  color: #fec913;
+  border: 1px solid transparent;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 2px;
+  text-shadow:
+  -1px 0 black,
+  0 1px black,
+  1px 0 black,
+  0 -1px black;
+}
+.call_to-btn_prof {
+  display: inline; 
+  background-color: #fec913;
+  color: #082465;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 10px; 
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.call_to-btn_prof:hover {
+  background-color: #082465;
+  color: #fec913;
 }
 
-.moyen {
-  color: #082465;
-  background: antiquewhite;
-  max-width: 500px;
+.profile-form-container {
+  background-color: #ffefcd;
+  width: 60%;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  transition: transform 0.3s ease-in-out;
+}
+
+.profile-form-container label {
+  display: block;
+  margin-bottom: 7px;
+  color: #082465;
+  font-weight: bold;
+}
+
+.profile-form-container input {
+  width: 60%;
+  padding: 10px;
   margin-bottom: 20px;
+  border-radius: 5px;
+  border: 2px solid #082465;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.profile-form-container input:focus,
+.profile-form-container input:hover {
+  border-color: #fec913;
+}
+
+.profile-form-container select {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 2px solid #082465;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.profile-form-container select:focus,
+.profile-form-container select:hover {
+  border-color: #fec913;
 }
 
 .OneQCM {
-  color: #082465;
-  background: antiquewhite;
-  max-width: 500px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  border: 1px solid #082465;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  transition: transform 0.3s ease-in-out;
-} 
+  padding: 10px;
+  margin-bottom: 20px;
+}
 
-.OneQCM span {
+.OldQCM {
+  margin-top: 20px;
+}
+
+.moyen {
+  background-color: #fec913;
+  color: #082465;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.QCMsFragment {
+  margin-top: 20px;
+}
+
+.QCMsFragment a {
+  color: #082465;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.QCMsFragment a:hover {
+  text-decoration: underline;
 }
