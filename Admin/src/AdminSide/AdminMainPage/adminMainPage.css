@@ -193,7 +193,8 @@ h5,
 /* other components */
 
 div {
-  text-align: center;
+  /* Sa7it amin 3la had bug . 1h da3et hhhhh*/
+ /* text-align: center;*/
 }
 
 h1 {
@@ -356,7 +357,7 @@ h1 {
 .questionForm input[type="checkbox"] {
   display: flex;
   align-items: left;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .questionModifForm {
@@ -381,9 +382,8 @@ h1 {
 
 .questionModifForm input {
   width: 70%;
-  margin-left: 10%;
   align-items: flex-start;
-  align-self: flex-start;
+  align-self: center;
   align-content: flex-start;
 }
 
@@ -404,7 +404,7 @@ label {
 }
 
 input {
-  margin-top: 5px;
+  /*margin-top: 5px;*/
   padding: 10px;
   width: 100%;
   box-sizing: border-box;

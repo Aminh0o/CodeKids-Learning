@@ -70,12 +70,12 @@ export default function AvisFragment(params) {
   };
 
   return (
-    <div class="avisContainer">
-      <div class="avisPage">
+    <div className="avisContainer">
+      <div className="avisPage">
         <span><b>Nom : </b> {params.oneAvis.nom} </span>
         <span><b>Email : </b> {params.oneAvis.email}</span>
         <span><b>Sujet : </b> {params.oneAvis.sujet}</span>
-        <span><b>Message : </b> {params.oneAvis.message}</span>
+        <span><b>Message : </b> </span><p>{params.oneAvis.message}</p>
         {!params.oneAvis.seen && (
           <button
             disabled={params.oneAvis.seen ? true : false}
@@ -84,7 +84,6 @@ export default function AvisFragment(params) {
             Marquer comme lu
           </button>
         )}
-        <button>Banner avis </button>
         <button onClick={handleSupression}>Supprimer avis</button>
         <StateGif />
       </div>

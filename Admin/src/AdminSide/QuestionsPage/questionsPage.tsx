@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Admin from "../../Backend/Admin.js";
-import Question from "../../Backend/Question.js";
 import NewQuestionFragment from "./NewQuestionFragment.js";
 // documuntaion about CodeEditor : https://uiwjs.github.io/react-textarea-code-editor/
 import CodeEditor from "@uiw/react-textarea-code-editor";
@@ -105,7 +104,7 @@ export default function QuestionPage() {
         };
 
         return (
-          <div>
+          <div className="Response">
             <input
               type="checkbox"
               checked={correct == String(params.index)}
@@ -123,7 +122,6 @@ export default function QuestionPage() {
                 setModifiedResponses(tmpArray);
               }}
             />
-            <br />
           </div>
         );
       };
@@ -143,7 +141,7 @@ export default function QuestionPage() {
     const handleSupprimerQuestion = async (modifiedQuestion) => {
       const userDecision = window.confirm(
         "Are you sure you want to delete this question?\n" +
-        modifiedQuestion.question
+          modifiedQuestion.question
       );
       setUpdateState({ state: LOADING, message: "", index: questionIndex });
 
@@ -320,7 +318,7 @@ export default function QuestionPage() {
       <h1 id="questionText">Ajouter une nouvelle question :</h1>
       <NewQuestionFragment setQuestions={setQuestions} questions={questions} />
       <h1 id="questionText">Modifier ou supprimer les questions :</h1>
-      <div class="questionModifForm">
+      <div className="questionModifForm">
         <form>
           <select
             defaultValue={""}
@@ -345,8 +343,16 @@ export default function QuestionPage() {
             <option value="JavaScript">JavaScript</option>
             <option value="Python">Python</option>
           </select>
-          <button onClick={(e) => handleChercherQuestions(e)} id="questionModifButton">Chercher</button>
-          <button onClick={(e) => handleResetSearch(e)} id="questionModifButton">
+          <button
+            onClick={(e) => handleChercherQuestions(e)}
+            id="questionModifButton"
+          >
+            Chercher
+          </button>
+          <button
+            onClick={(e) => handleResetSearch(e)}
+            id="questionModifButton"
+          >
             Réinitialiser les questions
           </button>
         </form>

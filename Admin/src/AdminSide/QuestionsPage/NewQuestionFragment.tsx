@@ -153,7 +153,26 @@ export default function NewQuestionFragment(params) {
   }
 
   return (
-    <form class="questionForm">
+    <form className="questionForm">
+      <label>le niveau : </label>
+      <select
+        onChange={(e) => setQuestion({ ...question, niveau: e.target.value })}
+      >
+        <option value="facile">facile</option>
+        <option value="moyen">moyen</option>
+        <option value="difficile">difficile</option>
+      </select>
+      <label>le langage :</label>
+      <select
+        onChange={(e) => {
+          setQuestion({ ...question, language: e.target.value });
+        }}
+      >
+        <option value="C">C</option>
+        <option value="Java">Java</option>
+        <option value="JavaScript">JavaScript</option>
+        <option value="Python">Python</option>
+      </select>
       <label>La Question :</label>
       <input
         ref={inputRef}
@@ -170,76 +189,61 @@ export default function NewQuestionFragment(params) {
         }}
         data-color-mode="light"
         style={{
-          fontSize: 17,
+          //fontSize: 17,
+          fontSize: 24,
+          alignItems: "left",
         }}
       />
-      <br />
-      <label>le niveau : </label>
-      <select
-        onChange={(e) => setQuestion({ ...question, niveau: e.target.value })}
-      >
-        <option value="facile">facile</option>
-        <option value="moyen">moyen</option>
-        <option value="difficile">difficile</option>
-      </select>
-      <br />
-      <label>le langage :</label>
-      <select
-        onChange={(e) => {
-          setQuestion({ ...question, language: e.target.value });
-        }}
-      >
-        <option value="C">C</option>
-        <option value="Java">Java</option>
-        <option value="JavaScript">JavaScript</option>
-        <option value="Python">Python</option>
-      </select>
-      <br />
+
       <div>
-        <input
-          type="checkbox"
-          checked={correct == "0"}
-          onChange={() => handleCheckBoxChange("0")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 0"
-          onInput={(e) => handleResponseChange(0, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "1"}
-          onChange={() => handleCheckBoxChange("1")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 1"
-          onInput={(e) => handleResponseChange(1, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "2"}
-          onChange={() => handleCheckBoxChange("2")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 2"
-          onInput={(e) => handleResponseChange(2, e.target.value)}
-        />
-        <br />
-        <input
-          type="checkbox"
-          checked={correct == "3"}
-          onChange={() => handleCheckBoxChange("3")}
-        />
-        <input
-          type="text"
-          placeholder="la reponse 3"
-          onInput={(e) => handleResponseChange(3, e.target.value)}
-        />
-        <br />
+        <div className="Response">
+          <input
+            type="checkbox"
+            checked={correct == "0"}
+            onChange={() => handleCheckBoxChange("0")}
+          />
+          <input
+            type="text"
+            placeholder="la reponse 0"
+            onInput={(e) => handleResponseChange(0, e.target.value)}
+          />
+        </div>
+        <div className="Response">
+          <input
+            type="checkbox"
+            checked={correct == "1"}
+            onChange={() => handleCheckBoxChange("1")}
+          />
+          <input
+            type="text"
+            placeholder="la reponse 1"
+            onInput={(e) => handleResponseChange(1, e.target.value)}
+          />
+        </div>
+        <div className="Response">
+          <input
+            type="checkbox"
+            checked={correct == "2"}
+            onChange={() => handleCheckBoxChange("2")}
+          />
+          <input
+            type="text"
+            placeholder="la reponse 2"
+            onInput={(e) => handleResponseChange(2, e.target.value)}
+          />
+        </div>
+        <div className="Response">
+          <input
+            type="checkbox"
+            checked={correct == "3"}
+            onChange={() => handleCheckBoxChange("3")}
+          />
+          <input
+            type="text"
+            placeholder="la reponse 3"
+            onInput={(e) => handleResponseChange(3, e.target.value)}
+          />
+        </div>
       </div>
       <StateGif />
       <button
