@@ -1,11 +1,11 @@
-Salam 3likoum.
+SALAM !
 
-Pour que le projet marche :
-- Install Node.js : https://nodejs.org/en (en moins version 14)
-- importer le projet sur votre PC 
-- import le fichier avec VS-Code
-- supprimer :
+If you wanna try this project :
+- Install Node.js : https://nodejs.org/en (at least version 14)
+- Import project into your pc 
+- Import the file using VS-Code
+- Deleye :
     pachage-lock.json
     yarn-lock...
-- dir : npm install
-- dir : npm run dev
+- Execute : npm install
+- Execute : npm run dev
